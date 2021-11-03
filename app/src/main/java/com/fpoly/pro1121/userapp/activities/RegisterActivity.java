@@ -1,5 +1,7 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,10 +53,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void events() {
         btnRegister.setOnClickListener(view -> {
-            String email = edtEmail.getText().toString();
-            String password = edtPassword.getText().toString();
-            String fullName = edtFullName.getText().toString();
-            actionRegister(email,password,fullName);
+            try {
+                String email = edtEmail.getText().toString();
+                String password = edtPassword.getText().toString();
+                String fullName = edtFullName.getText().toString();
+                actionRegister(email,password,fullName);
+            }catch(IllegalArgumentException argumentException){
+                Toast.makeText(RegisterActivity.this,"Vui lòng điền thông tin",LENGTH_SHORT).show();
+            }catch(Exception e) {
+                Toast.makeText(RegisterActivity.this,e.getMessage(),LENGTH_SHORT).show();
+            }
+
         });
     }
 

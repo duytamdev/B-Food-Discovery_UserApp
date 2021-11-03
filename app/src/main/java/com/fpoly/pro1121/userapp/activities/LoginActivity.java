@@ -1,5 +1,7 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,9 +47,16 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, RegisterActivity.class));
         });
         btnLogin.setOnClickListener(view -> {
-            String email = edtEmail.getText().toString();
-            String password = edtPassword.getText().toString();
-            actionSignIn(email,password);
+           try {
+               String email = edtEmail.getText().toString();
+               String  password = edtPassword.getText().toString();
+               actionSignIn(email,password);
+
+           }catch (IllegalArgumentException illegalArgumentException){
+               Toast.makeText(LoginActivity.this,"Vui lòng điền thông tin",LENGTH_SHORT).show();
+           }catch(Exception e){
+               Toast.makeText(LoginActivity.this,e.getMessage(),LENGTH_SHORT).show();
+           }
         });
     }
 
@@ -59,13 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                    Toast.LENGTH_SHORT).show();
+                                    LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
 
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                    LENGTH_SHORT).show();
                         }
                     }
                 });
