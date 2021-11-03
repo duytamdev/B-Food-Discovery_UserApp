@@ -34,15 +34,15 @@ public class OnboardActivity extends AppCompatActivity {
 
     }
     private ArrayList<PaperOnboardingPage> getPaperBoardingPageData(){
-        PaperOnboardingPage scr1 = new PaperOnboardingPage("Live your life smarter",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                Color.parseColor("#678FB4"), R.drawable.boarding3,R.drawable.ic_cursor);
-        PaperOnboardingPage scr2 = new PaperOnboardingPage("Banks",
-                "We carefully verify all banks before add them into the app",
-                Color.parseColor("#65B0B4"), R.drawable.boarding3, R.drawable.ic_cursor);
-        PaperOnboardingPage scr3 = new PaperOnboardingPage("Stores",
-                "All local stores are categorized for your convenience",
-                Color.parseColor("#9B90BC"), R.drawable.boarding3, R.drawable.ic_cursor);
+        PaperOnboardingPage scr1 = new PaperOnboardingPage("Welcome to Bhook",
+                "food delivery app that helps you to get the best dishes quickly and in time from your nearest restaurant.",
+                Color.parseColor("#FFFFFF"), R.drawable.boarding1,R.drawable.ic_more);
+        PaperOnboardingPage scr2 = new PaperOnboardingPage("Enjoy fast delivery",
+                "We offer 45 minutes delivery gurantee or the food will be delivered for free.",
+                Color.parseColor("#FFFFFF"), R.drawable.boarding2, R.drawable.ic_more);
+        PaperOnboardingPage scr3 = new PaperOnboardingPage("Order best dishes",
+                "Your order will be immediately collected and sent by our courier",
+                Color.parseColor("#FFFFFF"), R.drawable.boarding3, R.drawable.ic_more);
 
         ArrayList<PaperOnboardingPage> elements = new ArrayList<>();
         elements.add(scr1);
