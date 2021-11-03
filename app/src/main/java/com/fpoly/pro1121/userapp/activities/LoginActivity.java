@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fpoly.pro1121.userapp.R;
@@ -12,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextInputLayout tvUsernameLogin, tvPasswordLogin;
+    EditText edtEmail,edtPassword;
     Button btnLogin;
     TextView tvSignup;
     @Override
@@ -26,10 +27,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void initUI() {
-        tvUsernameLogin = (TextInputLayout) findViewById(R.id.tvUsernameLogin);
-        tvPasswordLogin = (TextInputLayout) findViewById(R.id.tvPasswordLogin);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        tvSignup = (TextView) findViewById(R.id.tvSignup);
+        edtEmail = findViewById(R.id.edt_email_login);
+        edtPassword =  findViewById(R.id.edt_password_login);
+        btnLogin =  findViewById(R.id.btnLogin);
+        tvSignup = findViewById(R.id.tvSignup);
     }
     private void events() {
         tvSignup.setOnClickListener(view -> {

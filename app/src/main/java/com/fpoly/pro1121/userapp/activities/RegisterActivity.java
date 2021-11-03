@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fpoly.pro1121.userapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterActivity extends AppCompatActivity {
-    TextInputLayout edtUsernameRegister, edtPasswordRegister, edtName;
+    EditText edtEmail,edtPassword,edtFullName;
     Button btnRegister;
     TextView tvHaveAnAccount;
     @Override
@@ -22,9 +23,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        edtUsernameRegister = (TextInputLayout) findViewById(R.id.edtUsernameRegister);
-        edtPasswordRegister = (TextInputLayout) findViewById(R.id.edtPasswordRegister);
-        edtName = (TextInputLayout) findViewById(R.id.edtName);
+        edtEmail = findViewById(R.id.edt_email_register);
+        edtPassword =  findViewById(R.id.edt_password_register);
+        edtFullName =  findViewById(R.id.edt_name_register);
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         tvHaveAnAccount = (TextView) findViewById(R.id.tvHaveAnAccount);
