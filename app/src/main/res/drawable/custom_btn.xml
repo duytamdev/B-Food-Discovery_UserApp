@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+ //- Hiển thị khi không nhất nút button -//
+    <item android:state_pressed="false">
+        <shape>
+            <solid android:color="#1597E5"></solid>
+
+            <corners android:radius="10dp"></corners>
+        </shape>
+    </item>
+</selector>
