@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.fpoly.pro1121.userapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     TextInputLayout edtUsernameRegister, edtPasswordRegister, edtName;
     Button btnRegister;
     TextView tvHaveAnAccount;
@@ -17,7 +17,11 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        initUI();
 
+    }
+
+    private void initUI() {
         edtUsernameRegister = (TextInputLayout) findViewById(R.id.edtUsernameRegister);
         edtPasswordRegister = (TextInputLayout) findViewById(R.id.edtPasswordRegister);
         edtName = (TextInputLayout) findViewById(R.id.edtName);

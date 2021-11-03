@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRO1121_UserApp" >
         <activity
-            android:name=".activities.Register"
+            android:name=".activities.RegisterActivity"
             android:exported="true" />
 
         <meta-data
@@ -18,7 +18,7 @@
             android:value="AIzaSyCpBscvukkqa7FEOERANwhZViUWrzCHIBM" />
 
         <activity
-            android:name=".activities.Login"
+            android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".activities.SplashActivity"
