@@ -54,7 +54,6 @@
                android:id="@+id/edt_email_login"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:textSize="10dp"
                android:importantForAutofill="no" />
 
 
@@ -76,7 +75,6 @@
                android:id="@+id/edt_password_login"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:textSize="10dp"
                android:inputType="textPassword"
                />
 
