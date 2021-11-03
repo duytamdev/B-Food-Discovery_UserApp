@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        viewPagerMain.setUserInputEnabled(false); // ko cho người dùng trượt để chuyển fragment
         bottomNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
