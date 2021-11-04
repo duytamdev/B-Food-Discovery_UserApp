@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRO1121_UserApp" >
         <activity
-            android:name=".activities.productActivity"
+            android:name=".activities.ProductDetailsActivity"
             android:exported="true" />
         <activity
             android:name=".activities.RegisterActivity"
