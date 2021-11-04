@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="16dp"
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
     <ImageView
@@ -35,10 +34,9 @@
         android:background="#E8E8E8"></View>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginHorizontal="32dp"
         android:id="@+id/tvUsernameLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/v1"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
@@ -57,10 +55,9 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginHorizontal="32dp"
         android:id="@+id/tvPasswordLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/tvUsernameLogin"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
@@ -80,14 +77,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:layout_marginHorizontal="32dp"
-
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvPasswordLogin"
-        android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
         android:text="Login">
 
     </Button>
