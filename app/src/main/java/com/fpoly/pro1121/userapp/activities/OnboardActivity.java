@@ -25,7 +25,7 @@ public class OnboardActivity extends AppCompatActivity {
         engine.setOnRightOutListener(new PaperOnboardingOnRightOutListener() {
             @Override
             public void onRightOut() {
-                Intent intent = new Intent(OnboardActivity.this,MainActivity.class);
+                Intent intent = new Intent(OnboardActivity.this, LoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
                 finish();

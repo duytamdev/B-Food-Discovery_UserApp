@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="16dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.Register">
+    tools:context=".activities.RegisterActivity">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:textSize="25dp"
-        android:textStyle="bold"
         android:gravity="center"
-        android:textColor="#FF4F5A">
+        android:text="Register"
+        android:textColor="#FF4F5A"
+        android:textSize="25dp"
+        android:textStyle="bold">
 
 
     </TextView>
@@ -89,7 +90,7 @@
         android:layout_below="@+id/btnRegister"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Do you have an account ?"
+        android:text="I have an account"
         android:textSize="11dp">
 
     </TextView>
