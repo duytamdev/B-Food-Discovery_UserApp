@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".activities.ProductDetailsActivity">
     <ScrollView
-        android:paddingHorizontal="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -17,15 +16,16 @@
             <ImageView
                 android:id="@+id/imgProduct"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/product" />
 
             <TextView
+                android:paddingHorizontal="8dp"
                 android:id="@+id/tvProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:gravity="left"
                 android:text="pizzA"
                 android:textColor="@color/black"
@@ -33,18 +33,19 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvprice"
+                android:paddingHorizontal="8dp"
+                android:id="@+id/tvPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="left"
                 android:text="80.000Vnd"
-                android:textColor="@color/black"
+                android:textColor="@color/orange"
                 android:textSize="33dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:paddingHorizontal="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -55,14 +56,14 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvDescription2"
+                android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="left"
+                android:paddingHorizontal="8dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adlplscsing edlit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blanddit elit tinciduntid. Sed rhoncus, tortor sed eleifend tristique, tor mauris molestie elit, et lacinia ipsum quam nec dui.Quisque nec mauris sit amet"
-                android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </LinearLayout>
     </ScrollView>

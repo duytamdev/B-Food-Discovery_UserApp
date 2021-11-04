@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.activities.ProductDetailsActivity;
 import com.fpoly.pro1121.userapp.activities.SearchProductActivity;
 import com.fpoly.pro1121.userapp.adapter.CategoryAdapter;
 import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
@@ -164,7 +165,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initRecyclerProducts() {
-        productAdapter = new ProductAdapter();
+        productAdapter = new ProductAdapter(new ProductAdapter.IClickProductListener() {
+            @Override
+            public void clickShowDetail(Product product) {
+                Intent intent= new Intent(requireContext(), ProductDetailsActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
+            }
+        });
         productAdapter.setData(listProducts);
         rvProduct.setAdapter(productAdapter);
         rvProduct.setLayoutManager(new GridLayoutManager(requireContext(),2));

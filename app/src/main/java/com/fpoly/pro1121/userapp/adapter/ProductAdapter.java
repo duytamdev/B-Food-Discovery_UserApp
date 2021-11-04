@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.Product;
 
 import java.util.ArrayList;
@@ -20,6 +21,14 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
 
     List<Product> list = new ArrayList<>();
+    public interface IClickProductListener {
+        void  clickShowDetail(Product product);
+    }
+    IClickProductListener iClickProductListener;
+
+    public ProductAdapter(IClickProductListener iClickProductListener) {
+        this.iClickProductListener = iClickProductListener;
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Product> list){
@@ -38,13 +47,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = list.get(position);
         if(product==null) return;
         holder.tvName.setText(product.getName());
-        holder.tvPrice.setText(String.valueOf(product.getPrice()));
+        holder.tvPrice.setText(Utils.getFormatNumber(product.getPrice()));
         Glide
                 .with(holder.itemView.getContext())
                 .load(product.getUrlImage())
                 .centerCrop()
                 .into(holder.image);
-
+        holder.itemView.setOnClickListener(view -> iClickProductListener.clickShowDetail(product));
     }
 
     @Override
