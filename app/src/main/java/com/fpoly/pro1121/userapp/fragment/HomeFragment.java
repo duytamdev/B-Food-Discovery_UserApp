@@ -2,6 +2,7 @@ package com.fpoly.pro1121.userapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +12,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.activities.SearchProductActivity;
 import com.fpoly.pro1121.userapp.adapter.CategoryAdapter;
+import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
 import com.fpoly.pro1121.userapp.adapter.SliderAdapter;
 import com.fpoly.pro1121.userapp.model.Category;
+import com.fpoly.pro1121.userapp.model.Product;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -40,9 +47,12 @@ public class HomeFragment extends Fragment {
     TextView tvHelloUser;
     SliderAdapter sliderAdapter;
     SliderView sliderView;
-    RecyclerView rvCategory;
+    RecyclerView rvCategory,rvProduct;
     CategoryAdapter categoryAdapter;
+    ProductAdapter productAdapter;
+
     List<Category> listCategories;
+    List<Product> listProducts;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     int[] imagesSlide ={R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner};
     @Nullable
@@ -52,11 +62,14 @@ public class HomeFragment extends Fragment {
         initUI();
         initSlider();
         initRecyclerCategory();
+        initRecyclerProducts();
         actionSearch();
         realTimeDataBase();
         return mView;
 
     }
+
+
 
     private void realTimeDataBase() {
         db.collection("categories")
@@ -93,6 +106,7 @@ public class HomeFragment extends Fragment {
         mSearch.setQueryHint("Search");
         tvHelloUser = mView.findViewById(R.id.tv_hello_user);
         rvCategory = mView.findViewById(R.id.rv_category);
+        rvProduct = mView.findViewById(R.id.rv_product);
     }
 
     private void initSlider() {
@@ -105,12 +119,55 @@ public class HomeFragment extends Fragment {
     }
 
     private void initRecyclerCategory() {
-        categoryAdapter = new CategoryAdapter();
+        categoryAdapter = new CategoryAdapter(new CategoryAdapter.IClickCategoryListener() {
+            @Override
+            public void clickCategory(String idCategory) {
+                getListProductOfCategory(idCategory);
+            }
+        });
         categoryAdapter.setData(listCategories);
         rvCategory.setAdapter(categoryAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),RecyclerView.HORIZONTAL,false);
         rvCategory.setLayoutManager(linearLayoutManager);
 
+    }
+
+    private void getListProductOfCategory(String idCategory) {
+        db.collection("products")
+                .whereEqualTo("categoryID",idCategory)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Product> clones = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String,Object> data = document.getData();
+                                String id = (String) data.get("id");
+                                String name = (String) data.get("name");
+                                int price =( (Long) data.get("price")).intValue();
+                                String categoryID = idCategory;
+                                String urlImage = (String) data.get("urlImage");
+                                String description = (String) data.get("description");
+                                Product product = new Product(id,urlImage,name,price,description,categoryID);
+                                clones.add(product);
+                            }
+                            listProducts = new ArrayList<>();
+                            listProducts.addAll(clones);
+                            productAdapter.setData(listProducts);
+                        } else {
+                            Log.w("-->", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    private void initRecyclerProducts() {
+        productAdapter = new ProductAdapter();
+        productAdapter.setData(listProducts);
+        rvProduct.setAdapter(productAdapter);
+        rvProduct.setLayoutManager(new GridLayoutManager(requireContext(),2));
     }
     private void actionSearch() {
         mSearch.setOnClickListener(new View.OnClickListener() {

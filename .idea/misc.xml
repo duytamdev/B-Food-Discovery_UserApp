@@ -10,6 +10,7 @@
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_main.xml" value="0.24974358974358973" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_onboad.xml" value="0.25364583333333335" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_product.xml" value="0.264" />
+        <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_product_details.xml" value="0.25677083333333334" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_register.xml" value="0.25677083333333334" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_search_product.xml" value="0.264" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/activity_splash.xml" value="0.264" />
@@ -17,6 +18,7 @@
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/fragment_cart.xml" value="0.25364583333333335" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/fragment_home.xml" value="0.25364583333333335" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/item_category.xml" value="0.536" />
+        <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/item_product.xml" value="0.25677083333333334" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/layout/slider_item.xml" value="0.25364583333333335" />
         <entry key="..\:/_FPTPoly/_HK4/DuAn/PRO1121_UserApp/app/src/main/res/menu/nav_bottom.xml" value="0.25364583333333335" />
       </map>

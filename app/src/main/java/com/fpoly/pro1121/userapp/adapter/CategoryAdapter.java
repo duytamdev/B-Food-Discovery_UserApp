@@ -21,6 +21,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
 
     List<Category> list =new ArrayList<>();
+    public interface IClickCategoryListener {
+        void clickCategory(String idCategory);
+    }
+    IClickCategoryListener iClickCategoryListener;
+
+    public CategoryAdapter(IClickCategoryListener iClickCategoryListener) {
+        this.iClickCategoryListener = iClickCategoryListener;
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Category> list) {
@@ -46,6 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     .into(holder.image);
         }
         holder.name.setText(category.getName());
+        holder.itemView.setOnClickListener(view-> iClickCategoryListener.clickCategory(category.getId()));
 
     }
 
