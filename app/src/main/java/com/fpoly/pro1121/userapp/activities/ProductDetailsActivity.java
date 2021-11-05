@@ -8,12 +8,14 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
+import com.fpoly.pro1121.userapp.database.ProductOrderDAO;
 import com.fpoly.pro1121.userapp.model.Product;
-import com.fpoly.pro1121.userapp.model.ProductOder;
+import com.fpoly.pro1121.userapp.model.ProductOrder;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -40,13 +42,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private void actionAddToCart() {
         btnAddCart.setOnClickListener(view->{
-            String id = productCurrent.getId();
-            String name = productCurrent.getName();
-            int price = productCurrent.getPrice();
-            String urlImage = productCurrent.getUrlImage();
+            String idProduct = productCurrent.getId();
             int quantityOrder = quantity;
-            ProductOder productOder = new ProductOder(idUserCurrent,id, name, price, urlImage,quantityOrder);
-            Log.e("--", "actionAddToCart: "+productOder.getIdUser());
+            ProductOrder productOrder = new ProductOrder(idUserCurrent,idProduct,productCurrent.getPrice(),quantityOrder);
+            boolean result = ProductOrderDAO.getInstance(this).insertProductOrder(productOrder);
+            if(result) {
+                Toast.makeText(ProductDetailsActivity.this,"Thêm thành công",Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
