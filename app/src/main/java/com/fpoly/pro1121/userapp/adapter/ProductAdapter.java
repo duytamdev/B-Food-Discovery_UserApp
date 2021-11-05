@@ -1,6 +1,7 @@
 package com.fpoly.pro1121.userapp.adapter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
 
     List<Product> list = new ArrayList<>();
+    List<Product> clones = new ArrayList<>();
+
     public interface IClickProductListener {
         void  clickShowDetail(Product product);
     }
@@ -33,6 +36,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Product> list){
         this.list = list;
+        if(this.list!=null){
+            clones.addAll(this.list);
+        }
+        notifyDataSetChanged();
+    }
+    public void filter(String text) {
+        list.clear();
+        if(text.isEmpty()){
+            list.addAll(clones);
+        } else{
+            text = text.toLowerCase();
+            Log.d("-", "filter: "+text);
+            for(Product item: clones){
+                if(item.getName().toLowerCase().contains(text)){
+                    list.add(item);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
     @NonNull
