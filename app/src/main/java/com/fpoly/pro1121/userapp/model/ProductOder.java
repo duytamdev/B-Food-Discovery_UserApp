@@ -1,6 +1,7 @@
 package com.fpoly.pro1121.userapp.model;
 
 public class ProductOder {
+    private String idUser;
     private String idProduct;
     private String name;
     private int price;
@@ -8,12 +9,22 @@ public class ProductOder {
     private int quantity;
     private int sumMoney;
 
-    public ProductOder(String idProduct, String name, int price, String urlImage, int quantity) {
+
+    public ProductOder(String idUser, String idProduct, String name, int price, String urlImage, int quantity) {
+        this.idUser = idUser;
         this.idProduct = idProduct;
         this.name = name;
         this.price = price;
         this.urlImage = urlImage;
         this.quantity = quantity;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public int getSumMoney() {

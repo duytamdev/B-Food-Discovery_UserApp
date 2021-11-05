@@ -26,6 +26,8 @@ import com.fpoly.pro1121.userapp.model.Category;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,6 +57,7 @@ public class HomeFragment extends Fragment {
     List<Category> listCategories;
     List<Product> listProducts;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     int[] imagesSlide ={R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner};
     @Nullable
     @Override
@@ -66,6 +69,7 @@ public class HomeFragment extends Fragment {
         initRecyclerProducts();
         actionSearch();
         realTimeDataBase();
+        getNameUser();
         return mView;
 
     }
@@ -108,6 +112,7 @@ public class HomeFragment extends Fragment {
         tvHelloUser = mView.findViewById(R.id.tv_hello_user);
         rvCategory = mView.findViewById(R.id.rv_category);
         rvProduct = mView.findViewById(R.id.rv_product);
+
     }
 
     private void initSlider() {
@@ -176,6 +181,26 @@ public class HomeFragment extends Fragment {
         productAdapter.setData(listProducts);
         rvProduct.setAdapter(productAdapter);
         rvProduct.setLayoutManager(new GridLayoutManager(requireContext(),2));
+    }
+    private void getNameUser(){
+        DocumentReference ref = db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        tvHelloUser.setText("Hello "+document.get("name").toString());
+                    } else {
+                        Log.d("--->", "No such document");
+                    }
+                } else {
+                    Log.d("--->", "get failed with ", task.getException());
+                }
+
+            }
+        });
+
     }
     private void actionSearch() {
         mSearch.setOnClickListener(new View.OnClickListener() {

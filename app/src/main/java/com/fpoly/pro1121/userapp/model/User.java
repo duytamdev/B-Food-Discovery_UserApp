@@ -19,6 +19,10 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    public User(String name) {
+        this.name = name;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

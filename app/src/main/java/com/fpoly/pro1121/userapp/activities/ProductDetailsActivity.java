@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,9 +14,14 @@ import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.fpoly.pro1121.userapp.model.ProductOder;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    String idUserCurrent = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     Button btnAddCart;
     ImageView imgProduct,ivAddQuantity,ivMinusQuantity;
     TextView tvName,tvPrice,tvDescription,tvQuantity;
@@ -39,7 +45,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             int price = productCurrent.getPrice();
             String urlImage = productCurrent.getUrlImage();
             int quantityOrder = quantity;
-            ProductOder productOder = new ProductOder(id, name, price, urlImage,quantityOrder);
+            ProductOder productOder = new ProductOder(idUserCurrent,id, name, price, urlImage,quantityOrder);
+            Log.e("--", "actionAddToCart: "+productOder.getIdUser());
         });
     }
 

@@ -24,13 +24,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
-                    android:paddingHorizontal="8dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="4"
                     android:id="@+id/tvProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_toLeftOf="@+id/tv_ui_quantity"
                     android:gravity="left"
+                    android:paddingHorizontal="8dp"
                     android:text="pizzA"
                     android:textColor="@color/black"
                     android:textSize="30sp"
@@ -56,14 +60,25 @@
                     android:layout_toLeftOf="@+id/iv_add_quantity_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
                 <ImageView
-                    android:layout_alignBottom="@id/iv_add_quantity_product"
-                    android:layout_toLeftOf="@+id/tv_quantity"
-                    android:layout_alignTop="@id/iv_add_quantity_product"
-                    android:src="@drawable/icons8_minus_24px"
                     android:id="@+id/iv_minus_quantity_product"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/iv_add_quantity_product"
+                    android:layout_alignBottom="@id/iv_add_quantity_product"
+                    android:layout_toLeftOf="@+id/tv_quantity"
+                    android:src="@drawable/icons8_minus_24px" />
+
+                <TextView
+                    android:id="@+id/tv_ui_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/iv_minus_quantity_product"
+                    android:layout_alignBottom="@id/iv_minus_quantity_product"
+                    android:layout_toLeftOf="@id/iv_minus_quantity_product"
+                    android:gravity="center"
+                    android:text="Số lượng: " />
             </RelativeLayout>
 
 
