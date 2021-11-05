@@ -75,16 +75,20 @@ public class AccountFragment extends Fragment {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()){
-                        Map<String,Object> data = document.getData();
-                        String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
-                        if(urlImage.length()>0){
-                            Glide.with(requireContext())
-                                    .load(urlImage)
-                                    .centerCrop()
-                                    .into(imgAvt);
-                        }
-                        String name = (String) data.get("name");
-                        tvNameUser.setText(name);
+                       try {
+                           Map<String,Object> data = document.getData();
+                           String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
+                           if(Objects.requireNonNull(urlImage).length()>0){
+                               Glide.with(requireContext())
+                                       .load(urlImage)
+                                       .centerCrop()
+                                       .into(imgAvt);
+                           }
+                           String name = (String) data.get("name");
+                           tvNameUser.setText(name);
+                       }catch(Exception e){
+                           e.printStackTrace();
+                       }
                     }
                 }
             }

@@ -96,18 +96,22 @@ public class EditProfileActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()){
-                        Map<String,Object> data = document.getData();
-                        assert data != null;
-                        String id = (String) data.get("id");
-                        String name = (String) data.get("name");
-                        String urlImage = (String) data.get("urlImage");
-                        String location = (String) data.get("location");
-                        String phone = (String) data.get("phoneNumber");
-                        if(urlImage.length()>0){
-                            urlImageSelected = urlImage;
-                        }
-                        userCurrentUser = new User(id,name,location,phone,urlImage);
-                        DOMUser(userCurrentUser);
+                       try {
+                           Map<String,Object> data = document.getData();
+                           assert data != null;
+                           String id = (String) data.get("id");
+                           String name = (String) data.get("name");
+                           String urlImage = (String) data.get("urlImage");
+                           String location = (String) data.get("location");
+                           String phone = (String) data.get("phoneNumber");
+                           if(urlImage.length()>0){
+                               urlImageSelected = urlImage;
+                           }
+                           userCurrentUser = new User(id,name,location,phone,urlImage);
+                           DOMUser(userCurrentUser);
+                       }catch(Exception e) {
+                           e.printStackTrace();
+                       }
                     }
                 }
             }
