@@ -70,12 +70,6 @@ public class SearchProductActivity extends AppCompatActivity {
                             Log.w("-->", "Error getting documents.", task.getException());
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
                 });
     }
 
@@ -83,7 +77,9 @@ public class SearchProductActivity extends AppCompatActivity {
         productAdapter = new ProductAdapter(new ProductAdapter.IClickProductListener() {
             @Override
             public void clickShowDetail(Product product) {
-
+                Intent intent= new Intent(SearchProductActivity.this, ProductDetailsActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
             }
         });
         productAdapter.setData(list);
