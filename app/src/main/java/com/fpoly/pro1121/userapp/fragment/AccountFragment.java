@@ -1,5 +1,6 @@
 package com.fpoly.pro1121.userapp.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.activities.EditProfileActivity;
+import com.fpoly.pro1121.userapp.activities.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +47,20 @@ public class AccountFragment extends Fragment {
 
     private void actionClickCollections() {
         tvEditProfile.setOnClickListener(view ->startMyActivity(EditProfileActivity.class));
+        tvLogOut.setOnClickListener(view ->{
+           new AlertDialog.Builder(requireContext())
+                   .setTitle("Xác Nhận")
+                   .setMessage("Bạn Thật Sự Muốn Đăng Xuất ?")
+                   .setPositiveButton("Đăng Xuất", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+                           mAuth.signOut();
+                           startMyActivity(LoginActivity.class);
+                       }
+                   })
+                   .setNegativeButton("Huỷ",null)
+                   .show();
+        });
     }
     private void startMyActivity(Class <?> cls){
         Intent intent = new Intent(requireContext(),cls);
