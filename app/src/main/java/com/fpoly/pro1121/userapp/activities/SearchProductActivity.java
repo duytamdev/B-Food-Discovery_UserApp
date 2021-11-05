@@ -40,8 +40,25 @@ public class SearchProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_product);
         initUI();
         initRecycler();
+        searchProduct();
         readDataRealTime();
         events();
+    }
+
+    private void searchProduct() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                productAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                productAdapter.filter(newText);
+                return true;
+            }
+        });
     }
 
     private void readDataRealTime() {
