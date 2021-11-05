@@ -7,16 +7,41 @@ public class User {
     private String name;
     private String location;
     private String phoneNumber;
+    private String urlImage;
     private boolean isAdmin;
 
-    public User(String id, String email, String password, String name, String location, String phoneNumber, boolean isAdmin) {
+
+    public User(String id, String email, String password, String name, String location, String phoneNumber, String urlImage, boolean isAdmin) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.location = location;
         this.phoneNumber = phoneNumber;
+        this.urlImage = urlImage;
         this.isAdmin = isAdmin;
+    }
+
+    public User(String id, String name, String location, String phoneNumber, String urlImage) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.urlImage = urlImage;
+    }
+    public void setData(String name, String location, String phoneNumber, String urlImage){
+        this.name = name;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.urlImage = urlImage;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     public User(String name) {

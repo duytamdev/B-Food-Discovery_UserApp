@@ -47,8 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
         edtPassword =  findViewById(R.id.edt_password_register);
         edtFullName =  findViewById(R.id.edt_name_register);
 
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-        tvHaveAnAccount = (TextView) findViewById(R.id.tvHaveAnAccount);
+        btnRegister =  findViewById(R.id.btnRegister);
+        tvHaveAnAccount = findViewById(R.id.tvHaveAnAccount);
     }
 
     private void events() {
@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            User user = new User(mAuth.getCurrentUser().getUid(),email,password,name,"","",false);
+                            User user = new User(mAuth.getCurrentUser().getUid(),email,password,name,"","","",false);
                             addUserToFireBase(user);
                         } else {
                             // If sign in fails, display a message to the user.

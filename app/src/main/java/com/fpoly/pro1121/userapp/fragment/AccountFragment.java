@@ -1,5 +1,6 @@
 package com.fpoly.pro1121.userapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.activities.EditProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,9 +37,17 @@ public class AccountFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_account,container,false);
         initUI();
-        loadDataUser();
+        actionClickCollections();
         return mView;
 
+    }
+
+    private void actionClickCollections() {
+        tvEditProfile.setOnClickListener(view ->startMyActivity(EditProfileActivity.class));
+    }
+    private void startMyActivity(Class <?> cls){
+        Intent intent = new Intent(requireContext(),cls);
+        startActivity(intent);
     }
 
     private void loadDataUser() {
@@ -50,7 +60,7 @@ public class AccountFragment extends Fragment {
                     if(document.exists()){
                         Map<String,Object> data = document.getData();
                         String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
-                        if(urlImage!=null){
+                        if(urlImage.length()>0){
                             Glide.with(requireContext())
                                     .load(urlImage)
                                     .centerCrop()
@@ -72,5 +82,11 @@ public class AccountFragment extends Fragment {
         tvHelpContact = mView.findViewById(R.id.tv_help_contact_account);
         tvChatWithMe = mView.findViewById(R.id.tv_chat_with_me);
         tvLogOut = mView.findViewById(R.id.tv_log_out);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadDataUser();
     }
 }

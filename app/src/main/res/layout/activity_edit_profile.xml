@@ -3,141 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingHorizontal="16dp"
     android:layout_height="match_parent"
     tools:context=".activities.EditProfileActivity"
-    android:background="@drawable/grad_bg"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:padding="20dp">
-
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="80dp"
             android:id="@+id/img_EditProfile"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/user"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/tv_Name_EditProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nguyễn Duy Tâm"
-            android:textSize="20sp"
-            android:layout_toRightOf="@+id/img_EditProfile"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:src="@drawable/user" />
 
-    </RelativeLayout>
+       <com.google.android.material.textfield.TextInputLayout
+           android:layout_marginTop="32dp"
+           android:layout_width="match_parent"
+           android:hint="Name"
+           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+           android:layout_height="wrap_content">
+           <EditText
+               android:id="@+id/edt_name_edt_profile"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+       </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:hint="Phone number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_height="wrap_content">
+        <EditText
+            android:inputType="number"
+            android:id="@+id/edt_edt_phone_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/Linear"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:hint="Location"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edt_location_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="Fullname"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:hint="Full name"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/et_bg"
-                android:fontFamily="sans-serif-light"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:id="@+id/ed_Fullname_EditProfile"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="Phone"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:hint="Phone"
-                android:background="@drawable/et_bg"
-                android:fontFamily="sans-serif-light"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:id="@+id/ed_Phone_EditProfile"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="Location"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:hint="Location"
-                android:background="@drawable/et_bg"
-                android:fontFamily="sans-serif-light"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:id="@+id/ed_Location_EditProfile"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/Save"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_below="@+id/Linear"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/btn_bg"
-            android:fontFamily="sans-serif-medium"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-        <Button
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="290dp"
-            android:layout_below="@id/Save"
-            android:id="@+id/BackToFragmentAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:fontFamily="sans-serif"
-            android:text="Back"
-            android:textAllCaps="true"
-            android:textColor="@color/white" />
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Update" />
+    </RelativeLayout>
 
     </LinearLayout>
-
-</LinearLayout>
