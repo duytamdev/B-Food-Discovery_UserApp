@@ -12,13 +12,15 @@ import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.Product;
+import com.fpoly.pro1121.userapp.model.ProductOder;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
     Button btnAddCart;
-    ImageView imgProduct;
-    TextView tvName,tvPrice,tvDescription;
+    ImageView imgProduct,ivAddQuantity,ivMinusQuantity;
+    TextView tvName,tvPrice,tvDescription,tvQuantity;
     Product productCurrent;
+    int quantity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,33 @@ public class ProductDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_details);
         initUI();
         getDataToView();
+        actionQuantity();
+        actionAddToCart();
+    }
+
+    private void actionAddToCart() {
+        btnAddCart.setOnClickListener(view->{
+            String id = productCurrent.getId();
+            String name = productCurrent.getName();
+            int price = productCurrent.getPrice();
+            String urlImage = productCurrent.getUrlImage();
+            int quantityOrder = quantity;
+            ProductOder productOder = new ProductOder(id, name, price, urlImage,quantityOrder);
+        });
+    }
+
+    private void actionQuantity() {
+        ivAddQuantity.setOnClickListener(view->{
+            quantity++;
+            tvQuantity.setText(quantity+"");
+        });
+        ivMinusQuantity.setOnClickListener(view->{
+            quantity--;
+            if(quantity<=1){
+                quantity = 1;
+            }
+            tvQuantity.setText(quantity+"");
+        });
     }
 
     private void getDataToView() {
@@ -48,6 +77,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvProduct);
         tvPrice = findViewById(R.id.tvPrice);
         tvDescription = findViewById(R.id.tvDescription);
+        ivAddQuantity = findViewById(R.id.iv_add_quantity_product);
+        ivMinusQuantity =  findViewById(R.id.iv_minus_quantity_product);
+        tvQuantity = findViewById(R.id.tv_quantity);
+        tvQuantity.setText(quantity+"");
 
     }
 }
