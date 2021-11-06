@@ -156,6 +156,32 @@ public class ProductOrderDAO  {
             db.close();
         }
     }
+    public void clickUpdateQuantity(ProductOrder productOrder,boolean isAdd){
+        db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            if(isAdd){
+                productOrder.setQuantity(productOrder.getQuantity()+1);
+                values.put(COLUMN_QUANTITY,productOrder.getQuantity());
+                values.put(COLUMN_UNIT_PRICE,productOrder.getUnitPrice());
+                db.update(TABLE_NAME,values,COLUMN_ID+" = ?",new String[]{String.valueOf(productOrder.getId())});
+                db.setTransactionSuccessful();
+           }else{
+                productOrder.setQuantity(productOrder.getQuantity()-1);
+                values.put(COLUMN_QUANTITY,productOrder.getQuantity());
+                values.put(COLUMN_UNIT_PRICE,productOrder.getUnitPrice());
+                db.update(TABLE_NAME,values,COLUMN_ID+" = ?",new String[]{String.valueOf(productOrder.getId())});
+                db.setTransactionSuccessful();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
     public boolean deleteAllProductOrder(String idUser){
         db = dbHelper.getWritableDatabase();
         db.beginTransaction();

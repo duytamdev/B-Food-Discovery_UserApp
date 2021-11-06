@@ -34,12 +34,13 @@ public class CartFragment extends Fragment {
     RecyclerView rvProductOrder;
     ProductOrderAdapter productOrderAdapter;
     TextView tvTotal;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String userIDExists = (Objects.requireNonNull(mAuth.getCurrentUser())).getUid();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_cart,container,false);
+        mView = inflater.inflate(R.layout.fragment_cart, container, false);
         initUI();
         return mView;
 
@@ -50,37 +51,52 @@ public class CartFragment extends Fragment {
         rvProductOrder = mView.findViewById(R.id.rv_cart_product);
         productOrderAdapter = new ProductOrderAdapter(new ProductOrderAdapter.IClickProductListener() {
             @Override
+            public void clickUpdateQuantity(boolean isAdd, ProductOrder productOrder) {
+                if(isAdd) {
+                    ProductOrderDAO.getInstance(requireContext()).clickUpdateQuantity(productOrder,true);
+                }else{
+                    ProductOrderDAO.getInstance(requireContext()).clickUpdateQuantity(productOrder,false);
+                }
+                reloadData();
+            }
+
+            @Override
             public void clickDelete(int idProductOrder) {
-                new AlertDialog.Builder(requireContext())
-                        .setTitle("Xác Nhận")
-                        .setMessage("Xoá đồ ăn này ra khỏi giỏ hàng ? ")
-                        .setPositiveButton("Xoá", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                boolean result =ProductOrderDAO.getInstance(requireContext()).deleteProductOrder(idProductOrder);
-                                if(result) {
-                                    Toast.makeText(requireContext(), "Product Order deleted", Toast.LENGTH_SHORT).show();
-                                    reloadData();
-                                }
-                            }
-                        })
-                        .setNegativeButton("Huỷ",null)
-                        .show();
+                deleteProductOrder(idProductOrder);
             }
         });
         productOrderAdapter.setData(list);
         rvProductOrder.setAdapter(productOrderAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         rvProductOrder.setLayoutManager(linearLayoutManager);
     }
 
+    private void deleteProductOrder(int idProductOrder) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Xác Nhận")
+                .setMessage("Xoá đồ ăn này ra khỏi giỏ hàng ? ")
+                .setPositiveButton("Xoá", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        boolean result = ProductOrderDAO.getInstance(requireContext()).deleteProductOrder(idProductOrder);
+                        if (result) {
+                            Toast.makeText(requireContext(), "Product Order deleted", Toast.LENGTH_SHORT).show();
+                            reloadData();
+                        }
+                    }
+                })
+                .setNegativeButton("Huỷ", null)
+                .show();
+    }
+
     @SuppressLint("SetTextI18n")
-    private void reloadData(){
+    private void reloadData() {
         list = new ArrayList<>();
         list = ProductOrderDAO.getInstance(requireContext()).getAllProductOrder(userIDExists);
         productOrderAdapter.setData(list);
-        tvTotal.setText("Tổng Tiền : "+ Utils.getFormatNumber(ProductOrderDAO.getInstance(requireContext()).getUnitPriceAllProductOrder(userIDExists)));
+        tvTotal.setText("Tổng Tiền : " + Utils.getFormatNumber(ProductOrderDAO.getInstance(requireContext()).getUnitPriceAllProductOrder(userIDExists)));
     }
+
     @Override
     public void onResume() {
         super.onResume();

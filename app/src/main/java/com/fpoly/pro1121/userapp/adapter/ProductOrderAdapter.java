@@ -32,12 +32,13 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
     List<ProductOrder> list = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public interface IClickProductListener{
+        void clickUpdateQuantity(boolean isAdd,ProductOrder productOrder);
         void clickDelete(int idProductOrder);
     }
-    IClickProductListener IClickProductListener;
+    IClickProductListener iClickProductListener;
 
-    public ProductOrderAdapter(ProductOrderAdapter.IClickProductListener IClickProductListener) {
-        this.IClickProductListener = IClickProductListener;
+    public ProductOrderAdapter(ProductOrderAdapter.IClickProductListener iClickProductListener) {
+        this.iClickProductListener = iClickProductListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -79,9 +80,17 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                 }
             }
         });
-        holder.tvQuantity.setText("Sô lượng: "+productOrder.getQuantity());
+        holder.tvQuantity.setText(""+productOrder.getQuantity());
         holder.tvUnitPrice.setText(Utils.getFormatNumber(productOrder.getUnitPrice()));
-        holder.ivDelete.setOnClickListener(view -> IClickProductListener.clickDelete(productOrder.getId()));
+        holder.ivAddQuantity.setOnClickListener(view-> iClickProductListener.clickUpdateQuantity(true,productOrder));
+        holder.ivMinusQuantity.setOnClickListener(view-> {
+            if(productOrder.getQuantity()<=1){
+                iClickProductListener.clickDelete(productOrder.getId());
+            }else{
+                iClickProductListener.clickUpdateQuantity(false,productOrder);
+            }
+        });
+
     }
 
     @Override
@@ -92,15 +101,16 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
 
     public class ProductOrderViewHolder extends RecyclerView.ViewHolder {
         CircleImageView ivImage;
-        ImageView ivDelete;
         TextView tvName,tvUnitPrice,tvQuantity;
+        ImageView ivMinusQuantity,ivAddQuantity;
         public ProductOrderViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.iv_product_in_cart);
-            ivDelete = itemView.findViewById(R.id.iv_delete_product_in_cart);
             tvName = itemView.findViewById(R.id.tv_name_product_in_cart);
             tvUnitPrice = itemView.findViewById(R.id.tv_price_product_in_cart);
             tvQuantity = itemView.findViewById(R.id.tv_quantity_product_in_cart);
+            ivMinusQuantity = itemView.findViewById(R.id.iv_minus_quantity_in_cart);
+            ivAddQuantity = itemView.findViewById(R.id.iv_add_quantity_in_cart);
         }
     }
 }
