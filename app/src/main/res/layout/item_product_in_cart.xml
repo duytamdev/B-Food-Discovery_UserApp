@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginEnd="8dp"
+            android:id="@+id/iv_product_in_cart"
+            android:src="@drawable/ic_home"
+            android:layout_width="56dp"
+            android:layout_height="56dp"/>
+
+        <TextView
+            android:id="@+id/tv_name_product_in_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_product_in_cart"
+            android:text="Pizza A"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_price_product_in_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_name_product_in_cart"
+            android:layout_toRightOf="@id/iv_product_in_cart"
+            android:text="đ45000"
+            android:textColor="@color/orange"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/iv_delete_product_in_cart"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_trash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_quantity_product_in_cart"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/iv_delete_product_in_cart"
+            android:text="Số lượng: 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

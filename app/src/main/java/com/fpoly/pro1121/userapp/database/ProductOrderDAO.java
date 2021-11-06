@@ -35,7 +35,7 @@ public class ProductOrderDAO  {
         try {
             if(isProductOrderExists(productOrder)){
                 ContentValues values = new ContentValues();
-                productOrder.setQuantity(productOrder.getQuantity()+1);
+                productOrder.setQuantity(productOrder.getQuantity()+getQuantityProductOrderExists(productOrder));
                 int unitPrice = productOrder.getUnitPrice();
                 values.put(COLUMN_QUANTITY,productOrder.getQuantity());
                 values.put(COLUMN_UNIT_PRICE,unitPrice);
@@ -70,6 +70,23 @@ public class ProductOrderDAO  {
             e.printStackTrace();
             return false;
         }
+    }
+    @SuppressLint("Range")
+    public int getQuantityProductOrderExists(ProductOrder productOrder){
+        db = dbHelper.getReadableDatabase();
+        int quantityExists = 0;
+        try {
+            Cursor cursor = db.rawQuery("SELECT "+COLUMN_QUANTITY+" FROM "+TABLE_NAME+" WHERE "+COLUMN_ID_USER+" = ? AND "+COLUMN_ID_PRODUCT+" = ? ",new String[]{productOrder.getIdUser(),productOrder.getIdProduct()});
+            if(cursor.getCount()>0){
+                cursor.moveToFirst();
+                 quantityExists = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                 cursor.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        return quantityExists;
     }
 
     @SuppressLint("Range")
@@ -123,11 +140,27 @@ public class ProductOrderDAO  {
         }
         return list;
     }
-    public boolean deleteAllProductOrder(){
+    public boolean deleteProductOrder(int idProductOrder){
         db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            int result = db.delete(TABLE_NAME,null,null);
+            int result = db.delete(TABLE_NAME,COLUMN_ID+" = ?",new String[]{String.valueOf(idProductOrder)});
+            db.setTransactionSuccessful();
+            return result>0;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+    public boolean deleteAllProductOrder(String idUser){
+        db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            int result = db.delete(TABLE_NAME,COLUMN_ID_USER+" = ?",new String[]{idUser});
             db.setTransactionSuccessful();
             return result>0;
         }catch (Exception e){
