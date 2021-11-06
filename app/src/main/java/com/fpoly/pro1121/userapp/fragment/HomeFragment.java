@@ -1,6 +1,8 @@
 package com.fpoly.pro1121.userapp.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.activities.LoginActivity;
 import com.fpoly.pro1121.userapp.activities.ProductDetailsActivity;
 import com.fpoly.pro1121.userapp.activities.SearchProductActivity;
 import com.fpoly.pro1121.userapp.adapter.CategoryAdapter;
@@ -59,6 +62,7 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     int[] imagesSlide ={R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner};
+    String idCategoryHamburger = "914981de-654f-47ea-a2ff-17b116f52719";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,11 +74,10 @@ public class HomeFragment extends Fragment {
         actionSearch();
         realTimeDataBase();
         getNameUser();
+        getListProductOfCategory(idCategoryHamburger);// default show list of hamburger
         return mView;
 
     }
-
-
 
     private void realTimeDataBase() {
         db.collection("categories")
@@ -139,6 +142,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void getListProductOfCategory(String idCategory) {
+        ProgressDialog progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.show();
         db.collection("products")
                 .whereEqualTo("categoryID",idCategory)
                 .get()
@@ -161,6 +167,7 @@ public class HomeFragment extends Fragment {
                             listProducts = new ArrayList<>();
                             listProducts.addAll(clones);
                             productAdapter.setData(listProducts);
+                            progressDialog.dismiss();
                         } else {
                             Log.w("-->", "Error getting documents.", task.getException());
                         }

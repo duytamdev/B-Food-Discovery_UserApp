@@ -149,11 +149,15 @@ public class EditProfileActivity extends AppCompatActivity {
                     if(result.getResultCode()==RESULT_OK){
                         Intent data = result.getData();
                         try {
+                            ProgressDialog progressDialog = new ProgressDialog(EditProfileActivity.this);
+                            progressDialog.setMessage("loading....");
+                            progressDialog.show();
+
                             Uri uriImage = data.getData();
                             imgAvt.setImageURI(uriImage); // dom
                             StorageReference ref  = FirebaseStorage.getInstance().getReference().child("imagesUser").child(UUID.randomUUID().toString());
                             UploadTask uploadTask = ref.putFile(uriImage);
-                            ProgressDialog progressDialog = new ProgressDialog(EditProfileActivity.this);
+
 
                             Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                                 @Override
@@ -161,8 +165,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         throw task.getException();
                                     }
-                                    progressDialog.setMessage("loading....");
-                                    progressDialog.show();
+
                                     return ref.getDownloadUrl();
                                 }
                             }).addOnCompleteListener(new OnCompleteListener<Uri>() {

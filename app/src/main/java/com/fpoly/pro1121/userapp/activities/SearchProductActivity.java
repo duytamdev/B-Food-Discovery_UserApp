@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +63,9 @@ public class SearchProductActivity extends AppCompatActivity {
     }
 
     private void readDataRealTime() {
+        ProgressDialog progressDialog = new ProgressDialog(SearchProductActivity.this);
+        progressDialog.setMessage("loading....");
+        progressDialog.show();
         db.collection("products")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -83,6 +87,7 @@ public class SearchProductActivity extends AppCompatActivity {
                             list = new ArrayList<>();
                             list.addAll(clones);
                             productAdapter.setData(list);
+                            progressDialog.dismiss();
                         } else {
                             Log.w("-->", "Error getting documents.", task.getException());
                         }

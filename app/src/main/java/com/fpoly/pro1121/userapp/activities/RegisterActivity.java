@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -102,24 +103,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void addUserToFireBase(User user) {
+        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
         db.collection("users").document(user.getId())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-                        progressDialog.setMessage("Loading ...");
-                        progressDialog.show();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
                                 progressDialog.dismiss();
                                 Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công",Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                finish();
                             }
-                        },1500);
-
-                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

@@ -5,6 +5,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -61,18 +62,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void actionSignIn(String email,String password) {
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                     LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         } else {
-                            // If sign in fails, display a message to the user.
-
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     LENGTH_SHORT).show();
                         }
