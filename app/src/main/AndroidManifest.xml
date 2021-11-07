@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRO1121_UserApp">
         <activity
+            android:name=".activities.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OrderComplete"
             android:exported="false" />
         <activity

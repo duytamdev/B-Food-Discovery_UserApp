@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.activities.EditProfileActivity;
 import com.fpoly.pro1121.userapp.activities.LoginActivity;
+import com.fpoly.pro1121.userapp.activities.OrderHistoryActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +62,7 @@ public class AccountFragment extends Fragment {
                    .setNegativeButton("Huỷ",null)
                    .show();
         });
+        tvOrderHistory.setOnClickListener(view ->startMyActivity(OrderHistoryActivity.class));
     }
     private void startMyActivity(Class <?> cls){
         Intent intent = new Intent(requireContext(),cls);

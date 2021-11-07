@@ -15,6 +15,10 @@ public class Order {
         this.unitPrice = unitPrice;
     }
 
+    public Order(int unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public String getId() {
         return id;
     }
