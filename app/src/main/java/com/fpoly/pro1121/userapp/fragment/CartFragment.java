@@ -60,12 +60,16 @@ public class CartFragment extends Fragment {
     private void actionOrder() {
         btnOrder.setOnClickListener(view ->{
           try {
-              ProgressDialog progressDialog = new ProgressDialog(requireContext());
-              progressDialog.setMessage("loading....");
-              progressDialog.show();
               UUID uuid = UUID.randomUUID();
               String id = uuid.toString();
               List<ProductOrder>productOrderList = list;
+              if(productOrderList.size()<=0){
+                  Toast.makeText(requireContext(),"Bạn chưa có gì trong giỏ hàng cả",Toast.LENGTH_SHORT).show();
+                  return;
+              }
+              ProgressDialog progressDialog = new ProgressDialog(requireContext());
+              progressDialog.setMessage("loading....");
+              progressDialog.show();
               Order order = new Order(id,userIDExists,productOrderList,unitPrice);
                 db.collection("orders")
                         .document(order.getId())
