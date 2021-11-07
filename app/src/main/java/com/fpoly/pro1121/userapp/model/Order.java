@@ -1,18 +1,17 @@
 package com.fpoly.pro1121.userapp.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
     private String id;
     private String userID;
-    private List<ProductOrder> lisstProductOrder;
+    private List<ProductOrder> productOrderList;
     private int unitPrice;
 
-    public Order(String id, String userID, List<ProductOrder> lisstProductOrder, int unitPrice) {
+    public Order(String id, String userID, List<ProductOrder> productOrderList, int unitPrice) {
         this.id = id;
         this.userID = userID;
-        this.lisstProductOrder = lisstProductOrder;
+        this.productOrderList = productOrderList;
         this.unitPrice = unitPrice;
     }
 
@@ -32,12 +31,12 @@ public class Order {
         this.userID = userID;
     }
 
-    public List<ProductOrder> getLisstProductOrder() {
-        return lisstProductOrder;
+    public List<ProductOrder> getProductOrderList() {
+        return productOrderList;
     }
 
-    public void setLisstProductOrder(List<ProductOrder> lisstProductOrder) {
-        this.lisstProductOrder = lisstProductOrder;
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
     }
 
     public int getUnitPrice() {
