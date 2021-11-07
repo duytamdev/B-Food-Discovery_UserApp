@@ -74,6 +74,7 @@ public class AccountFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
+                    assert document != null;
                     if(document.exists()){
                        try {
                            Map<String,Object> data = document.getData();

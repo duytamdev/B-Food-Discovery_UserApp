@@ -39,13 +39,14 @@
           android:layout_height="wrap_content"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            app:endIconMode="clear_text"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="38dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/v1"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
-            android:hint="Username"
+            android:hint="Email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <EditText
@@ -59,11 +60,10 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            app:passwordToggleEnabled="true"
             android:layout_marginHorizontal="38dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_username_login"
-            android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
             android:hint="Password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

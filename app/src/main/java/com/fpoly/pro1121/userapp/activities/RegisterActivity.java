@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,9 +43,10 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText edtEmail,edtPassword,edtFullName;
+    EditText edtEmail,edtPassword,edtFullName,edtPhone,edtLocation;
     Button btnRegister;
     TextView tvHaveAnAccount;
+    ImageView ivPre;
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
@@ -59,9 +61,12 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void initUI() {
+        ivPre = findViewById(R.id.iv_pre_register);
         edtEmail = findViewById(R.id.edt_email_register);
         edtPassword =  findViewById(R.id.edt_password_register);
         edtFullName =  findViewById(R.id.edt_name_register);
+        edtPhone = findViewById(R.id.edt_phone_number_register);
+        edtLocation = findViewById(R.id.edt_location_register);
 
         btnRegister =  findViewById(R.id.btnRegister);
         tvHaveAnAccount = findViewById(R.id.tvHaveAnAccount);
@@ -73,7 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
                 String fullName = edtFullName.getText().toString();
-                actionRegister(email,password,fullName);
+                String phoneNumber = edtPhone.getText().toString();
+                String location = edtLocation.getText().toString();
+                actionRegister(email,password,fullName,phoneNumber,location);
             }catch(IllegalArgumentException argumentException){
                 Toast.makeText(RegisterActivity.this,"Vui lòng điền thông tin",LENGTH_SHORT).show();
             }catch(Exception e) {
@@ -81,16 +88,28 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         });
+        ivPre.setOnClickListener(view->{
+            startMyActivity(LoginActivity.class);
+        });
+        tvHaveAnAccount.setOnClickListener(view -> {
+            startMyActivity(LoginActivity.class);
+        });
+    }
+    private void startMyActivity(Class <?> cls){
+        Intent intent = new Intent(RegisterActivity.this,cls);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
     }
 
-    private void actionRegister(String email, String password,String name) {
+    private void actionRegister(String email, String password,String name,String phoneNumber,String location) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            User user = new User(mAuth.getCurrentUser().getUid(),name,"","","",false);
+                            User user = new User(mAuth.getCurrentUser().getUid(),name,location,phoneNumber,"",false);
                             addUserToFireBase(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -113,8 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                                 progressDialog.dismiss();
                                 Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                                finish();
+                                startMyActivity(LoginActivity.class);
                             }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -126,4 +144,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        finish();
+    }
 }

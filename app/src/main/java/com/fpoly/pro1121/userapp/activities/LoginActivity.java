@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private void events() {
         tvSignup.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
         });
         btnLogin.setOnClickListener(view -> {
            try {
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                     LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
