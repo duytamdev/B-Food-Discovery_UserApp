@@ -36,9 +36,10 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         void clickDelete(int idProductOrder);
     }
     IClickProductListener iClickProductListener;
-
-    public ProductOrderAdapter(ProductOrderAdapter.IClickProductListener iClickProductListener) {
+    boolean isOrderHistory;
+    public ProductOrderAdapter(ProductOrderAdapter.IClickProductListener iClickProductListener,boolean isOrderHistory) {
         this.iClickProductListener = iClickProductListener;
+        this.isOrderHistory = isOrderHistory;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -80,16 +81,24 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                 }
             }
         });
-        holder.tvQuantity.setText(""+productOrder.getQuantity());
         holder.tvUnitPrice.setText(Utils.getFormatNumber(productOrder.getUnitPrice()));
-        holder.ivAddQuantity.setOnClickListener(view-> iClickProductListener.clickUpdateQuantity(true,productOrder));
-        holder.ivMinusQuantity.setOnClickListener(view-> {
-            if(productOrder.getQuantity()<=1){
-                iClickProductListener.clickDelete(productOrder.getId());
-            }else{
-                iClickProductListener.clickUpdateQuantity(false,productOrder);
-            }
-        });
+        if(isOrderHistory){
+            holder.tvQuantity.setText("Số lượng mua: "+productOrder.getQuantity());
+            holder.ivAddQuantity.setVisibility(View.GONE);
+            holder.ivMinusQuantity.setVisibility(View.GONE);
+        }else{
+            holder.tvQuantity.setText(""+productOrder.getQuantity());
+            holder.ivAddQuantity.setOnClickListener(view-> iClickProductListener.clickUpdateQuantity(true,productOrder));
+            holder.ivMinusQuantity.setOnClickListener(view-> {
+                if(productOrder.getQuantity()<=1){
+                    iClickProductListener.clickDelete(productOrder.getId());
+                }else{
+                    iClickProductListener.clickUpdateQuantity(false,productOrder);
+                }
+            });
+        }
+
+
 
     }
 

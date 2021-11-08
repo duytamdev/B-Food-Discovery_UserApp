@@ -109,7 +109,7 @@ public class CartFragment extends Fragment {
             public void clickDelete(int idProductOrder) {
                 deleteProductOrder(idProductOrder);
             }
-        });
+        },false);
         productOrderAdapter.setData(list);
         rvProductOrder.setAdapter(productOrderAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);

@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.pro1121.userapp.R;
-import com.fpoly.pro1121.userapp.adapter.OrderHistoryAdapter;
-import com.fpoly.pro1121.userapp.model.Order;
+import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
 import com.fpoly.pro1121.userapp.model.ProductOrder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,13 +22,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class OrderHistoryActivity extends AppCompatActivity {
 
     RecyclerView rvOrderHistory;
-    OrderHistoryAdapter orderHistoryAdapter;
-    List<Order> list;
+    List<ProductOrder> list;
+    ProductOrderAdapter productOrderAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -56,17 +54,14 @@ public class OrderHistoryActivity extends AppCompatActivity {
                             return;
                         }
                         if (value != null) {
-                            List<Order> clones = new ArrayList<>();
                             try {
+                                List<ProductOrder> clones= new ArrayList<>();
                                 for (DocumentSnapshot document : value.getDocuments()) {
                                     Map<String, Object> data = document.getData();
                                     assert data != null;
-                                    String id = (String) data.get("id");
                                     String idUser = (String) data.get("userID");
-                                    int price = ((Long) Objects.requireNonNull(data.get("unitPrice"))).intValue();
 
                                     // get list productOrder
-                                    List<ProductOrder> productOrderList= new ArrayList<>();
                                     List<Map<String,Object>> productOrders = (List<Map<String, Object>>) data.get("productOrderList");
                                     assert productOrders != null;
                                     for(Map<String,Object> dataOfProductOrders : productOrders){
@@ -76,19 +71,16 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                        int quantity = ((Long) dataOfProductOrders.get("quantity")).intValue();
                                        int unitPrice = ((Long) dataOfProductOrders.get("unitPrice")).intValue();
                                        ProductOrder productOrder = new ProductOrder(idProductOrder,idUser,idProduct,priceProduct,quantity,unitPrice);
-                                        productOrderList.add(productOrder);
+                                        clones.add(productOrder);
                                    }
-                                    Order order = new Order(id, idUser, productOrderList, price);
-                                    clones.add(order);
                                 }
+                                list = new ArrayList<>();
+                                list.addAll(clones);
+                                productOrderAdapter.setData(list);
+                                progressDialog.dismiss();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            list = new ArrayList<>();
-                            list.addAll(clones);
-                            orderHistoryAdapter.setData(list);
-                            progressDialog.dismiss();
-
                         }
                     }
                 });
@@ -96,10 +88,20 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
     private void initUI() {
         rvOrderHistory = findViewById(R.id.rv_order_history);
-        orderHistoryAdapter = new OrderHistoryAdapter();
-        orderHistoryAdapter.setData(list);
+        productOrderAdapter = new ProductOrderAdapter(new ProductOrderAdapter.IClickProductListener() {
+            @Override
+            public void clickUpdateQuantity(boolean isAdd, ProductOrder productOrder) {
+
+            }
+
+            @Override
+            public void clickDelete(int idProductOrder) {
+
+            }
+        },true);
+        productOrderAdapter.setData(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvOrderHistory.setLayoutManager(linearLayoutManager);
-        rvOrderHistory.setAdapter(orderHistoryAdapter);
+        rvOrderHistory.setAdapter(productOrderAdapter);
     }
 }
