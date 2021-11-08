@@ -104,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/btn_login_google"
                 android:drawableLeft="@drawable/ic_google"
                 android:layout_marginEnd="50dp"
                 android:textAllCaps="false"
