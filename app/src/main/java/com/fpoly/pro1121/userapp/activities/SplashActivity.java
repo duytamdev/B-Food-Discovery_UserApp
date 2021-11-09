@@ -8,9 +8,11 @@ import android.os.Handler;
 
 import com.fpoly.pro1121.userapp.MySharePreference;
 import com.fpoly.pro1121.userapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
 
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +21,14 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 boolean isInstalled = MySharePreference.getInstance(SplashActivity.this).getBoolean("isInstalled");
-                if(isInstalled){
+
+                    // đã đăng nhập , đã dùng app
+                if(mAuth.getCurrentUser()!=null&& isInstalled){
+                    startMyActivity(MainActivity.class);
+                    // đã dùng app, chưa đăng nhập
+                }else if(mAuth.getCurrentUser()==null&& isInstalled){
                     startMyActivity(LoginActivity.class);
+                    // chưa dùng app
                 }else{
                     startMyActivity(OnboardActivity.class);
                     MySharePreference.getInstance(SplashActivity.this).putBoolean("isInstalled",true);
