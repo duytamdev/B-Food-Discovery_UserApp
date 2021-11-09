@@ -39,14 +39,16 @@
                     android:textColor="@color/black"
                     android:textSize="30sp"
                     android:textStyle="bold" />
+
                 <ImageView
-                    android:layout_alignBottom="@id/tvProduct"
-                    android:layout_alignTop="@id/tvProduct"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/icons8_add_24px"
+                    android:layout_marginEnd="8dp"
                     android:id="@+id/iv_add_quantity_product"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tvProduct"
+                    android:layout_alignBottom="@id/tvProduct"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/icons8_add_24px" />
                 <TextView
                     android:id="@+id/tv_quantity"
                     android:layout_marginHorizontal="4dp"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:gravity="center_horizontal"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="32dp"
     android:layout_height="match_parent"
     tools:context=".activities.EditProfileActivity"
     android:orientation="vertical">
@@ -17,6 +17,7 @@
             android:src="@drawable/user" />
 
        <com.google.android.material.textfield.TextInputLayout
+           app:endIconMode="clear_text"
            android:layout_marginTop="32dp"
            android:layout_width="match_parent"
            android:hint="Name"
@@ -29,6 +30,7 @@
        </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:hint="Phone number"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -41,6 +43,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:endIconMode="clear_text"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:hint="Location"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -55,6 +59,7 @@
         android:layout_height="match_parent">
 
         <Button
+            android:paddingVertical="16dp"
             android:id="@+id/btn_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
