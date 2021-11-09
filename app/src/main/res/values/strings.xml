@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PRO1121_UserApp</string>
+    <string name="facebook_app_id">1211095376044958</string>
+    <string name="fb_login_protocol_scheme">fb1211095376044958</string>
+
 </resources>

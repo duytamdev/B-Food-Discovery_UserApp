@@ -33,6 +33,8 @@
 
         <activity
             android:name=".activities.LoginActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="true" />
         <activity
             android:name=".activities.SplashActivity"
@@ -52,6 +54,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="true" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
     </application>
 
 </manifest>
