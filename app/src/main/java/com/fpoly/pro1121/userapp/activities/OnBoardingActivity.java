@@ -13,7 +13,7 @@ import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
 
 import java.util.ArrayList;
 
-public class OnboardActivity extends AppCompatActivity {
+public class OnBoardingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class OnboardActivity extends AppCompatActivity {
         engine.setOnRightOutListener(new PaperOnboardingOnRightOutListener() {
             @Override
             public void onRightOut() {
-                Intent intent = new Intent(OnboardActivity.this, LoginActivity.class);
+                Intent intent = new Intent(OnBoardingActivity.this, LoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
                 finish();

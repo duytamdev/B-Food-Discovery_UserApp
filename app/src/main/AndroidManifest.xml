@@ -49,7 +49,7 @@
             android:name=".activities.SearchProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.OnboardActivity"
+            android:name=".activities.OnBoardingActivity"
             android:exported="true" />
         <activity
             android:name=".activities.MainActivity"

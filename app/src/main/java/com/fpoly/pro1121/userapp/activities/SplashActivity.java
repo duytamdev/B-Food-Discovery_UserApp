@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
                     startMyActivity(LoginActivity.class);
                     // chưa dùng app
                 }else{
-                    startMyActivity(OnboardActivity.class);
+                    startMyActivity(OnBoardingActivity.class);
                     MySharePreference.getInstance(SplashActivity.this).putBoolean("isInstalled",true);
                 }
             }
