@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +36,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
-
+    TextInputLayout tilName,tilPhone,tilLocation;
     CircleImageView imgAvt;
     EditText edtName,edtPhone,edtLocation;
     Button btnUpdate;
@@ -52,6 +54,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void actionUpdate() {
+        Utils.addTextChangedListener(edtName,tilName,false);
+        Utils.addTextChangedListener(edtPhone,tilPhone,false);
+        Utils.addTextChangedListener(edtLocation,tilLocation,false);
         imgAvt.setOnClickListener(view->{
             Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
             photoPickerIntent.setType("image/*");
@@ -59,10 +64,16 @@ public class EditProfileActivity extends AppCompatActivity {
         });
         btnUpdate.setOnClickListener(view ->{
             try {
-                String name = edtName.getText().toString();
-                String phone = edtPhone.getText().toString();
-                String location = edtLocation.getText().toString();
+                String name = edtName.getText().toString().trim();
+                String phone = edtPhone.getText().toString().trim();
+                String location = edtLocation.getText().toString().trim();
                 String urlImage = urlImageSelected;
+                if(name.isEmpty()|| phone.isEmpty()|| location.isEmpty()){
+                    return;
+                }
+                if(tilName.getError()!=null||tilPhone.getError()!=null||tilLocation.getError()!=null){
+                    return;
+                }
                 userCurrentUser.setData(name,location,phone,urlImage);
                 updateUserFireBase(userCurrentUser);
             }catch(Exception e) {
@@ -119,6 +130,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        tilName = findViewById(R.id.til_name_edit_profile);
+        tilPhone = findViewById(R.id.til_phone_edit_profile);
+        tilLocation = findViewById(R.id.til_location_edit_profile);
         imgAvt = findViewById(R.id.img_EditProfile);
         edtName = findViewById(R.id.edt_name_edt_profile);
         edtPhone = findViewById(R.id.edt_edt_phone_profile);

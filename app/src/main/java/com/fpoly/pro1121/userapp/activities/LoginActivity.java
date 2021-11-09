@@ -15,8 +15,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +34,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -52,9 +58,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
+    TextInputLayout tilEmail,tilPassword;
     EditText edtEmail,edtPassword;
     Button btnLogin,btnLoginGoogle,btnLoginFacebook;
     TextView tvSignup;
@@ -155,8 +163,13 @@ public class LoginActivity extends AppCompatActivity {
         tvSignup = findViewById(R.id.tvSignup);
         btnLoginGoogle = findViewById(R.id.btn_login_google);
         btnLoginFacebook = findViewById(R.id.btn_login_facebook);
+        tilEmail = findViewById(R.id.til_email);
+        tilPassword = findViewById(R.id.til_password);
     }
+
     private void events() {
+        Utils.addTextChangedListener(edtEmail,tilEmail,true);
+        Utils.addTextChangedListener(edtPassword,tilPassword,false);
         tvSignup.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
             overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
@@ -165,6 +178,13 @@ public class LoginActivity extends AppCompatActivity {
            try {
                String email = edtEmail.getText().toString();
                String  password = edtPassword.getText().toString();
+               // if validate không cho phép đăng nhập
+               if(email.trim().isEmpty()|| password.trim().isEmpty()) {
+                   return;
+               }
+               if((tilEmail.getError()!=null)|| (tilPassword.getError()!=null)){
+                   return;
+               }
                actionSignIn(email,password);
 
            }catch (IllegalArgumentException illegalArgumentException){
@@ -191,8 +211,9 @@ public class LoginActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Email hoặc password không chính xác",
                                     LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });

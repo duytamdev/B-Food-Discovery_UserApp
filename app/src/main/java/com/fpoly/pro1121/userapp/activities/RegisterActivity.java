@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +44,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
+    TextInputLayout tilName,tilEmail,tilPassword,tilPhone,tilLocation;
     EditText edtEmail,edtPassword,edtFullName,edtPhone,edtLocation;
     Button btnRegister;
     TextView tvHaveAnAccount;
@@ -61,6 +63,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void initUI() {
+        tilEmail = findViewById(R.id.til_email_register);
+        tilPassword = findViewById(R.id.til_password_register);
+        tilName = findViewById(R.id.til_name_register);
+        tilPhone = findViewById(R.id.til_phone_register);
+        tilLocation = findViewById(R.id.til_location_register);
         ivPre = findViewById(R.id.iv_pre_register);
         edtEmail = findViewById(R.id.edt_email_register);
         edtPassword =  findViewById(R.id.edt_password_register);
@@ -73,13 +80,26 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void events() {
+        Utils.addTextChangedListener(edtFullName,tilName,false);
+        Utils.addTextChangedListener(edtEmail,tilEmail,true);
+        Utils.addTextChangedListener(edtPassword,tilPassword,false);
+        Utils.addTextChangedListener(edtPhone,tilPhone,false);
+        Utils.addTextChangedListener(edtLocation,tilLocation,false);
+
+
         btnRegister.setOnClickListener(view -> {
             try {
-                String email = edtEmail.getText().toString();
-                String password = edtPassword.getText().toString();
-                String fullName = edtFullName.getText().toString();
-                String phoneNumber = edtPhone.getText().toString();
-                String location = edtLocation.getText().toString();
+                String email = edtEmail.getText().toString().trim();
+                String password = edtPassword.getText().toString().trim();
+                String fullName = edtFullName.getText().toString().trim();
+                String phoneNumber = edtPhone.getText().toString().trim();
+                String location = edtLocation.getText().toString().trim();
+                if(tilName.getError()!=null||tilEmail.getError()!=null||tilPassword.getError()!=null||tilPhone.getError()!=null|| tilLocation.getError()!=null) {
+                    return;
+                }
+                if(email.isEmpty()||password.isEmpty()||fullName.isEmpty()||phoneNumber.isEmpty()||location.isEmpty()) {
+                    return;
+                }
                 actionRegister(email,password,fullName,phoneNumber,location);
             }catch(IllegalArgumentException argumentException){
                 Toast.makeText(RegisterActivity.this,"Vui lòng điền thông tin",LENGTH_SHORT).show();
