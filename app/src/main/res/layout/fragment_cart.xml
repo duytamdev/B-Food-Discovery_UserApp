@@ -14,13 +14,14 @@
         android:text="My Order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/tv_ui_order"
         android:id="@+id/rv_cart_product"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/tv_total_price"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content"/>
+        android:layout_below="@id/tv_ui_order"
+        android:layout_marginTop="8dp" />
     <TextView
         android:id="@+id/tv_total_price"
         android:layout_marginStart="8dp"
@@ -31,10 +32,11 @@
         android:text="Tổng Tiền : đ400.000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/btn_order_now"
-        android:layout_alignParentBottom="true"
-        android:text="Order now !"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Order now !" />
 </RelativeLayout>

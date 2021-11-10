@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
+import com.fpoly.pro1121.userapp.activities.ChangePasswordActivity;
 import com.fpoly.pro1121.userapp.activities.EditProfileActivity;
 import com.fpoly.pro1121.userapp.activities.LoginActivity;
 import com.fpoly.pro1121.userapp.activities.OrderHistoryActivity;
@@ -32,7 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AccountFragment extends Fragment {
     CircleImageView imgAvt;
     TextView tvNameUser;
-    TextView tvEditProfile,tvOrderHistory,tvHelpContact,tvChatWithMe,tvLogOut;
+    TextView tvEditProfile,tvOrderHistory,tvChangePassword,tvChatWithMe,tvLogOut;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     View mView;
@@ -63,6 +64,7 @@ public class AccountFragment extends Fragment {
                    .show();
         });
         tvOrderHistory.setOnClickListener(view ->startMyActivity(OrderHistoryActivity.class));
+        tvChangePassword.setOnClickListener(view-> startMyActivity(ChangePasswordActivity.class));
     }
     private void startMyActivity(Class <?> cls){
         Intent intent = new Intent(requireContext(),cls);
@@ -103,7 +105,7 @@ public class AccountFragment extends Fragment {
         tvNameUser = mView.findViewById(R.id.tv_name_user_account);
         tvEditProfile = mView.findViewById(R.id.tv_edit_profile_account);
         tvOrderHistory = mView.findViewById(R.id.tv_order_history_account);
-        tvHelpContact = mView.findViewById(R.id.tv_help_contact_account);
+        tvChangePassword = mView.findViewById(R.id.tv_change_password_account);
         tvChatWithMe = mView.findViewById(R.id.tv_chat_with_me);
         tvLogOut = mView.findViewById(R.id.tv_log_out);
     }

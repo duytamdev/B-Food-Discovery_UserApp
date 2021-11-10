@@ -24,10 +24,11 @@
            android:hint="Name"
            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
            android:layout_height="wrap_content">
+
            <EditText
                android:id="@+id/edt_name_edt_profile"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content"/>
+               android:layout_height="wrap_content" />
        </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -62,7 +63,6 @@
         android:layout_height="match_parent">
 
         <Button
-            android:paddingVertical="16dp"
             android:id="@+id/btn_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +70,7 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:paddingVertical="16dp"
             android:text="Update" />
     </RelativeLayout>
 

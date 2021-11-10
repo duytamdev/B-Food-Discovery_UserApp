@@ -60,7 +60,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_help_contact_account"
+        android:id="@+id/tv_change_password_account"
         android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         android:padding="8dp"
         android:drawablePadding="20dp"
         android:gravity="center_vertical"
-        android:text="Help contact"
+        android:text="Change password"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:drawableStartCompat="@drawable/ic_help" />
