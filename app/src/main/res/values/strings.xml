@@ -1,10 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_web_client_id" translatable="false">832001951903-jcuc0ph0eamho9shdg2qir53mcuv3pqg.apps.googleusercontent.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">832001951903</string>
-    <string name="google_api_key" translatable="false">AIzaSyDfUu6W6OuWT68lX-XTpHi0ejxxb3gwlqE</string>
-    <string name="google_app_id" translatable="false">1:832001951903:android:c3c980b1d2a269f308baaa</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDfUu6W6OuWT68lX-XTpHi0ejxxb3gwlqE</string>
-    <string name="google_storage_bucket" translatable="false">project-1-android-teamwork.appspot.com</string>
-    <string name="project_id" translatable="false">project-1-android-teamwork</string>
+    <string name="app_name">PRO1121_UserApp</string>
+    <string name="facebook_app_id">1211095376044958</string>
+    <string name="fb_login_protocol_scheme">fb1211095376044958</string>
+
 </resources>
