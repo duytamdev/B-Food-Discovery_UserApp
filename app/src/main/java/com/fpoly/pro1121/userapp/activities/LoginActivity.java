@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout tilEmail,tilPassword;
     EditText edtEmail,edtPassword;
     Button btnLogin,btnLoginGoogle,btnLoginFacebook;
-    TextView tvSignup;
+    TextView tvSignup,tvForgetPassword;
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     GoogleSignInClient googleSignInClient;
@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void initUI() {
+        tvForgetPassword = findViewById(R.id.tv_forget_password);
         edtEmail = findViewById(R.id.edt_email_login);
         edtPassword =  findViewById(R.id.edt_password_login);
         btnLogin =  findViewById(R.id.btnLogin);
@@ -192,6 +193,10 @@ public class LoginActivity extends AppCompatActivity {
            }catch(Exception e){
                Toast.makeText(LoginActivity.this,e.getMessage(),LENGTH_SHORT).show();
            }
+        });
+        tvForgetPassword.setOnClickListener(view->{
+            startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
+            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
         });
     }
 

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRO1121_UserApp">
         <activity
+            android:name=".activities.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ChangePasswordActivity"
             android:exported="false" />
         <activity

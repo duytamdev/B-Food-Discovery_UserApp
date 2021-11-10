@@ -62,7 +62,6 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            app:errorEnabled="true"
             android:id="@+id/til_password"
             app:passwordToggleEnabled="true"
             android:layout_marginHorizontal="38dp"
@@ -80,7 +79,15 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+        <TextView
+            android:id="@+id/tv_forget_password"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:layout_marginHorizontal="38dp"
+            android:gravity="right"
+            android:text="Forget password?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <Button
             android:layout_marginHorizontal="105dp"
             android:paddingVertical="14dp"
