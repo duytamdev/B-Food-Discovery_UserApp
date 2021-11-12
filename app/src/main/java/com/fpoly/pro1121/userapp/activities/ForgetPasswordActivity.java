@@ -3,6 +3,7 @@ package com.fpoly.pro1121.userapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
+    Toolbar toolbar;
     TextInputLayout tilEmail;
     EditText edtEmail;
     Button btnReset;
@@ -28,7 +30,17 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         initUI();
+        initToolbar();
         events();
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_forget_password);
+        toolbar.setTitle("Reset Password");
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view-> onBackPressed());
+
     }
 
     private void events() {
@@ -67,5 +79,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         tilEmail = findViewById(R.id.til_email_reset);
         edtEmail = findViewById(R.id.edt_email_reset);
         btnReset = findViewById(R.id.btn_reset_password);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
     }
 }

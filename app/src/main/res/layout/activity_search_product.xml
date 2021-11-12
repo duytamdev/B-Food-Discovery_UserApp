@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:layout_height="match_parent"
     tools:context=".activities.SearchProductActivity">
-    <ImageView
-        android:layout_marginTop="16dp"
-        android:id="@+id/iv_prev_search"
-        android:src="@drawable/ic_pre_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <ScrollView
-        android:layout_marginTop="16dp"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            style="@style/FoxAndroid.Toolbar"
+            android:id="@+id/toolbar_search"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
         <LinearLayout
+            android:padding="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
             <TextView
                 android:textStyle="bold"
                 android:textSize="24sp"
@@ -45,5 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

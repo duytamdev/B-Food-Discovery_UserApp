@@ -3,9 +3,11 @@ package com.fpoly.pro1121.userapp.activities;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,7 @@ import java.util.Map;
 
 public class OrderHistoryActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     RecyclerView rvOrderHistory;
     List<ProductOrder> list;
     ProductOrderAdapter productOrderAdapter;
@@ -36,7 +39,21 @@ public class OrderHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
         initUI();
+        initToolbar();
         readDataRealTime();
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_order_history);
+        toolbar.setTitle("Order history");
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void readDataRealTime() {
@@ -103,5 +120,11 @@ public class OrderHistoryActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvOrderHistory.setLayoutManager(linearLayoutManager);
         rvOrderHistory.setAdapter(productOrderAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
     }
 }

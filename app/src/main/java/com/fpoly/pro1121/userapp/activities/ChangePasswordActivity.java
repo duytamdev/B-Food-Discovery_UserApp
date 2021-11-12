@@ -2,6 +2,7 @@ package com.fpoly.pro1121.userapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import java.util.Objects;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     TextInputLayout tilOldPassword,tilNewPassword,tilReNewPassword;
     EditText edtOldPassword, edtNewPassword,edtReNewPassword;
     Button btnUpdatePassword;
@@ -35,7 +37,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         initUI();
+        initToolbar();
         events();
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_change_password);
+        toolbar.setTitle("Change Password");
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view-> onBackPressed());
+
     }
 
     private void events() {
@@ -107,5 +119,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
     }
 }

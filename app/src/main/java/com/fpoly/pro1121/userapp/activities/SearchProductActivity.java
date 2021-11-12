@@ -3,6 +3,7 @@ package com.fpoly.pro1121.userapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,13 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -26,10 +25,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchProductActivity extends AppCompatActivity {
 
-    ImageView  imgPrev;
+    Toolbar toolbar;
     SearchView searchView;
     RecyclerView rvProduct;
     ProductAdapter productAdapter;
@@ -43,7 +43,7 @@ public class SearchProductActivity extends AppCompatActivity {
         initRecycler();
         searchProduct();
         readDataRealTime();
-        events();
+        initToolbar();
     }
 
     private void searchProduct() {
@@ -111,22 +111,24 @@ public class SearchProductActivity extends AppCompatActivity {
 
 
     private void initUI() {
-        imgPrev = findViewById(R.id.iv_prev_search);
         searchView = findViewById(R.id.search_product);
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search");
         rvProduct = findViewById(R.id.rv_product_search);
     }
 
-    private void events() {
-        imgPrev.setOnClickListener(new View.OnClickListener() {
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_search);
+        toolbar.setTitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SearchProductActivity.this,MainActivity.class));
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-                finish();
+                onBackPressed();
             }
         });
+
     }
 
     @Override

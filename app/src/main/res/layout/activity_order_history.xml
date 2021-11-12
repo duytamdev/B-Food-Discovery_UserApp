@@ -4,20 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="16dp"
     android:background="#E6E6E6"
     android:layout_height="match_parent"
     tools:context=".activities.OrderHistoryActivity">
-    <TextView
-        android:textColor="@color/black"
-        android:layout_marginBottom="16dp"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:text="Order history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+    <androidx.appcompat.widget.Toolbar
+        style="@style/FoxAndroid.Toolbar"
+        android:id="@+id/toolbar_order_history"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
     <androidx.recyclerview.widget.RecyclerView
+        android:padding="16dp"
+
         android:id="@+id/rv_order_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -4,74 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:gravity="center_horizontal"
-    android:paddingHorizontal="32dp"
     android:layout_height="match_parent"
     tools:context=".activities.EditProfileActivity"
     android:orientation="vertical">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginTop="80dp"
-            android:id="@+id/img_EditProfile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/user" />
-
-       <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/til_name_edit_profile"
-           app:endIconMode="clear_text"
-           android:layout_marginTop="32dp"
-           android:layout_width="match_parent"
-           android:hint="Name"
-           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-           android:layout_height="wrap_content">
-
-           <EditText
-               android:id="@+id/edt_name_edt_profile"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" />
-       </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_phone_edit_profile"
-        android:layout_marginTop="16dp"
+    <androidx.appcompat.widget.Toolbar
+        style="@style/FoxAndroid.Toolbar"
+        android:id="@+id/toolbar_edit_profile"
         android:layout_width="match_parent"
-        android:hint="Phone number"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_height="wrap_content">
-        <EditText
-            android:inputType="number"
-            android:id="@+id/edt_edt_phone_profile"
+        android:layout_height="?attr/actionBarSize"/>
+        <LinearLayout
+            android:gravity="center"
+            android:paddingHorizontal="32dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="80dp"
+                android:id="@+id/img_EditProfile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/user" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_location_edit_profile"
-        app:endIconMode="clear_text"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:hint="Location"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/edt_location_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_name_edit_profile"
+                app:endIconMode="clear_text"
+                android:layout_marginTop="32dp"
+                android:layout_width="match_parent"
+                android:hint="Name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btn_update_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:paddingVertical="16dp"
-            android:text="Update" />
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/edt_name_edt_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone_edit_profile"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:hint="Phone number"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/edt_edt_phone_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_location_edit_profile"
+                app:endIconMode="clear_text"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:hint="Location"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edt_location_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btn_update_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingVertical="16dp"
+                    android:text="Update" />
+            </RelativeLayout>
+        </LinearLayout>
+
 
     </LinearLayout>

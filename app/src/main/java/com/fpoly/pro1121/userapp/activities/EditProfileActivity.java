@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
+    Toolbar toolbar;
     TextInputLayout tilName,tilPhone,tilLocation;
     CircleImageView imgAvt;
     EditText edtName,edtPhone,edtLocation;
@@ -50,7 +52,16 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
         getDataFireBase();
         initUI();
+        initToolbar();
         actionUpdate();
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_edit_profile);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        toolbar.setTitle("Edit Profile");
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view->onBackPressed());
     }
 
     private void actionUpdate() {
@@ -199,4 +210,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
     );
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+    }
 }
