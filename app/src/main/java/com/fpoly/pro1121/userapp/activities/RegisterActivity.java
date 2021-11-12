@@ -94,6 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String fullName = edtFullName.getText().toString().trim();
                 String phoneNumber = edtPhone.getText().toString().trim();
                 String location = edtLocation.getText().toString().trim();
+                // check validation
                 if(tilName.getError()!=null||tilEmail.getError()!=null||tilPassword.getError()!=null||tilPhone.getError()!=null|| tilLocation.getError()!=null) {
                     return;
                 }
@@ -123,44 +124,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void actionRegister(String email, String password,String name,String phoneNumber,String location) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            User user = new User(mAuth.getCurrentUser().getUid(),name,location,phoneNumber,"",false);
-                            addUserToFireBase(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+      // khi đăng kí auth thành công tiến thành tạo 1 user có collection id, idUser trùng với uidUser đã tạo trên db
     }
 
     private void addUserToFireBase(User user) {
-        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setMessage("Loading ...");
-        progressDialog.show();
-        db.collection("users").document(user.getId())
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
-                                Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công",Toast.LENGTH_SHORT).show();
-                                startMyActivity(LoginActivity.class);
-                            }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("---->", "Error writing document", e);
-                    }
-                });
 
     }
 
