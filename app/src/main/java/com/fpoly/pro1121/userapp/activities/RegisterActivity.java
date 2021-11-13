@@ -125,10 +125,34 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void actionRegister(String email, String password,String name,String phoneNumber,String location) {
       // khi đăng kí auth thành công tiến thành tạo 1 user có collection id, idUser trùng với uidUser đã tạo trên db
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            String userID = mAuth.getCurrentUser().getUid();
+                            User user = new User(userID,name,location,phoneNumber,"",false);
+                            addUserToFireBase(user);
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Đăng kí thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Hãy chắc chắn rằng email này \n chưa đăng kí tài khoản nào", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void addUserToFireBase(User user) {
+        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setMessage("Đang tạo tài khoản...");
+        progressDialog.show();
 
+        db.collection("users").document(user.getId()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công",Toast.LENGTH_SHORT).show();
+                        startMyActivity(LoginActivity.class);
+                    }
+                }).addOnFailureListener(e -> Log.w("error","Lỗi hệ thống vui lòng thử lại"));
     }
 
     @Override
