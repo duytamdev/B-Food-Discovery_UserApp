@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
     List<Product> listProducts;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    int[] imagesSlide ={R.drawable.banner,R.drawable.banner,R.drawable.banner,R.drawable.banner};
+    int[] imagesSlide ={R.drawable.banner1,R.drawable.banner2,R.drawable.banner3,R.drawable.banner};
     String idCategoryHamburger = "914981de-654f-47ea-a2ff-17b116f52719";
     @Nullable
     @Override
@@ -183,6 +183,7 @@ public class HomeFragment extends Fragment {
                 Intent intent= new Intent(requireContext(), ProductDetailsActivity.class);
                 intent.putExtra("product", product);
                 startActivity(intent);
+                requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
             }
         });
         productAdapter.setData(listProducts);

@@ -92,4 +92,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvQuantity.setText(quantity+"");
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+    }
 }
