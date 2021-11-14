@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -70,7 +71,7 @@ public class CartFragment extends Fragment {
               ProgressDialog progressDialog = new ProgressDialog(requireContext());
               progressDialog.setMessage("loading....");
               progressDialog.show();
-              Order order = new Order(id,userIDExists,productOrderList,unitPrice);
+              Order order = new Order(id,userIDExists,productOrderList,unitPrice,new Date());
                 db.collection("orders")
                         .document(order.getId())
                         .set(order)

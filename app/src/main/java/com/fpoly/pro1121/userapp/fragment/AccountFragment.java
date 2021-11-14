@@ -69,6 +69,7 @@ public class AccountFragment extends Fragment {
     private void startMyActivity(Class <?> cls){
         Intent intent = new Intent(requireContext(),cls);
         startActivity(intent);
+        requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }
 
     private void loadDataUser() {

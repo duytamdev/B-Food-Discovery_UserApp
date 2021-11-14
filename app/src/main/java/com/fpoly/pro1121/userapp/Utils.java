@@ -1,5 +1,6 @@
 package com.fpoly.pro1121.userapp;
 
+import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -11,16 +12,40 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Currency;
+import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
 
+    @SuppressLint("SimpleDateFormat")
+   public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    @SuppressLint("SimpleDateFormat")
+    public static SimpleDateFormat formatMonth = new SimpleDateFormat("dd\nMMM");
+
+
+    public static String DateToString(Date date){
+        return simpleDateFormat.format(date).toString();
+    }
+    public static Date StringToDate(String sDate){
+        try {
+            return  simpleDateFormat.parse(sDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public  static String DateToStringMonth(Date date){
+        return formatMonth.format(date);
+    }
     public static String getFormatNumber(int number) {
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
         return (currencyVN.format(number));
     }
+
     public static void addTextChangedListener(EditText e, final TextInputLayout t, boolean isEmail) {
         e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
