@@ -61,7 +61,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                            new AlertDialog.Builder(ForgetPasswordActivity.this)
-                                   .setMessage("Chúng tôi đã gửi đường đẫn thay đỗi mật khẩu đến hộp thư của bạn !")
+                                   .setMessage("Chúng tôi đã gửi đường đẫn thay đổi mật khẩu đến hộp thư của bạn !")
                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                        @Override
                                        public void onClick(DialogInterface dialogInterface, int i) {
@@ -70,6 +70,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                        }
                                    })
                                    .show();
+                        }
+                        else{
+                            new AlertDialog.Builder(ForgetPasswordActivity.this)
+                                    .setMessage("Email của bạn không đúng hoặc chưa đăng kí")
+                                    .setPositiveButton("Thử lại", null)
+                                    .show();
                         }
                     }
                 });
