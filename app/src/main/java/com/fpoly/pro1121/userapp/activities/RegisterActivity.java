@@ -7,9 +7,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -133,16 +136,24 @@ public class RegisterActivity extends AppCompatActivity {
                             User user = new User(userID,name,location,phoneNumber,"",false);
                             addUserToFireBase(user);
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Đăng kí thất bại", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(RegisterActivity.this, "Hãy chắc chắn rằng email này \n chưa đăng kí tài khoản nào", Toast.LENGTH_SHORT).show();
+                            new AlertDialog.Builder(RegisterActivity.this)
+                                    .setTitle("Đăng kí thất bại")
+                                    .setMessage("Email này được đăng kí")
+                                    .setPositiveButton("Thoát đăng kí", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            startMyActivity(LoginActivity.class);
+                                        }
+                                    })
+                                    .setNegativeButton("Thử lại   ",null)
+                                    .show();
                         }
                     }
                 });
     }
-
     private void addUserToFireBase(User user) {
         final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setMessage("Đang tạo tài khoản...");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
 
         db.collection("users").document(user.getId()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
