@@ -1,17 +1,17 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
@@ -25,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SearchProductActivity extends AppCompatActivity {
 
@@ -34,7 +33,8 @@ public class SearchProductActivity extends AppCompatActivity {
     RecyclerView rvProduct;
     ProductAdapter productAdapter;
     List<Product> list;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +74,14 @@ public class SearchProductActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             List<Product> clones = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String,Object> data = document.getData();
+                                Map<String, Object> data = document.getData();
                                 String id = (String) data.get("id");
                                 String name = (String) data.get("name");
-                                int price =( (Long) data.get("price")).intValue();
+                                int price = ((Long) data.get("price")).intValue();
                                 String categoryID = (String) data.get("categoryID");
                                 String urlImage = (String) data.get("urlImage");
                                 String description = (String) data.get("description");
-                                Product product = new Product(id,urlImage,name,price,description,categoryID);
+                                Product product = new Product(id, urlImage, name, price, description, categoryID);
                                 clones.add(product);
                             }
                             list = new ArrayList<>();
@@ -99,14 +99,15 @@ public class SearchProductActivity extends AppCompatActivity {
         productAdapter = new ProductAdapter(new ProductAdapter.IClickProductListener() {
             @Override
             public void clickShowDetail(Product product) {
-                Intent intent= new Intent(SearchProductActivity.this, ProductDetailsActivity.class);
+                Intent intent = new Intent(SearchProductActivity.this, ProductDetailsActivity.class);
                 intent.putExtra("product", product);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
             }
         });
         productAdapter.setData(list);
         rvProduct.setAdapter(productAdapter);
-        rvProduct.setLayoutManager(new GridLayoutManager(this,2));
+        rvProduct.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
 
@@ -134,6 +135,6 @@ public class SearchProductActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

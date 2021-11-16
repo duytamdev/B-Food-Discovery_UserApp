@@ -17,12 +17,9 @@ import com.fpoly.pro1121.userapp.model.ProductOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     List<Order> list = new ArrayList<>();
-    public interface IOrderListener{
-        void clickShowDetail(List<ProductOrder> list);
-    }
     IOrderListener iOrderListener;
 
     public OrderAdapter(IOrderListener iOrderListener) {
@@ -30,21 +27,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<Order> list){
+    public void setData(List<Order> list) {
         this.list = list;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         return new OrderViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = list.get(position);
-        if(order==null) return;
+        if (order == null) return;
         holder.tvUnitPrice.setText(Utils.getFormatNumber(order.getUnitPrice()));
         holder.tvDate.setText(Utils.DateToStringMonth(order.getDate()));
         holder.itemView.setOnClickListener(view -> iOrderListener.clickShowDetail(order.getProductOrderList()));
@@ -52,12 +50,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public int getItemCount() {
-        if(list!=null) return list.size();
+        if (list != null) return list.size();
         return 0;
     }
 
+    public interface IOrderListener {
+        void clickShowDetail(List<ProductOrder> list);
+    }
+
     public class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDate,tvUnitPrice;
+        TextView tvDate, tvUnitPrice;
+
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tv_date_order);

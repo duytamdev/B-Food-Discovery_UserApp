@@ -4,13 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ProductOrder implements Parcelable {
+    public static final Creator<ProductOrder> CREATOR = new Creator<ProductOrder>() {
+        @Override
+        public ProductOrder createFromParcel(Parcel in) {
+            return new ProductOrder(in);
+        }
+
+        @Override
+        public ProductOrder[] newArray(int size) {
+            return new ProductOrder[size];
+        }
+    };
     private int id;
     private String idUser;
     private String idProduct;
     private int priceProduct;
     private int quantity;
     private int unitPrice;
-
 
     public ProductOrder(String idUser, String idProduct, int priceProduct, int quantity) {
         this.idUser = idUser;
@@ -36,18 +46,6 @@ public class ProductOrder implements Parcelable {
         quantity = in.readInt();
         unitPrice = in.readInt();
     }
-
-    public static final Creator<ProductOrder> CREATOR = new Creator<ProductOrder>() {
-        @Override
-        public ProductOrder createFromParcel(Parcel in) {
-            return new ProductOrder(in);
-        }
-
-        @Override
-        public ProductOrder[] newArray(int size) {
-            return new ProductOrder[size];
-        }
-    };
 
     public int getUnitPrice() {
         return this.priceProduct * quantity;

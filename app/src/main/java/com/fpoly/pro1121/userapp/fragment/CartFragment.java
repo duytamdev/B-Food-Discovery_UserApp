@@ -23,7 +23,6 @@ import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.activities.OrderComplete;
 import com.fpoly.pro1121.userapp.activities.ProductDetailsActivity;
-import com.fpoly.pro1121.userapp.activities.ShowDetailsProductsOrder;
 import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
 import com.fpoly.pro1121.userapp.database.ProductOrderDAO;
 import com.fpoly.pro1121.userapp.model.Order;
@@ -41,16 +40,17 @@ import java.util.UUID;
 
 public class CartFragment extends Fragment {
 
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     View mView;
     List<ProductOrder> list;
     RecyclerView rvProductOrder;
     ProductOrderAdapter productOrderAdapter;
     TextView tvTotal;
     Button btnOrder;
-    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userIDExists = (Objects.requireNonNull(mAuth.getCurrentUser())).getUid();
     int unitPrice;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,19 +62,19 @@ public class CartFragment extends Fragment {
     }
 
     private void actionOrder() {
-        btnOrder.setOnClickListener(view ->{
-          try {
-              UUID uuid = UUID.randomUUID();
-              String id = uuid.toString();
-              List<ProductOrder>productOrderList = list;
-              if(productOrderList.size()<=0){
-                  Toast.makeText(requireContext(),"Bạn chưa có gì trong giỏ hàng cả",Toast.LENGTH_SHORT).show();
-                  return;
-              }
-              ProgressDialog progressDialog = new ProgressDialog(requireContext());
-              progressDialog.setMessage("loading....");
-              progressDialog.show();
-              Order order = new Order(id,userIDExists,productOrderList,unitPrice,new Date());
+        btnOrder.setOnClickListener(view -> {
+            try {
+                UUID uuid = UUID.randomUUID();
+                String id = uuid.toString();
+                List<ProductOrder> productOrderList = list;
+                if (productOrderList.size() <= 0) {
+                    Toast.makeText(requireContext(), "Bạn chưa có gì trong giỏ hàng cả", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ProgressDialog progressDialog = new ProgressDialog(requireContext());
+                progressDialog.setMessage("loading....");
+                progressDialog.show();
+                Order order = new Order(id, userIDExists, productOrderList, unitPrice, new Date());
                 db.collection("orders")
                         .document(order.getId())
                         .set(order)
@@ -83,14 +83,14 @@ public class CartFragment extends Fragment {
                             public void onSuccess(Void unused) {
                                 progressDialog.dismiss();
                                 startActivity(new Intent(requireContext(), OrderComplete.class));
-                                requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                                 // clear cart
                                 ProductOrderDAO.getInstance(requireContext()).deleteAllProductOrder(order.getUserID());
                             }
                         });
-          }catch(Exception e){
-              e.printStackTrace();
-          }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -101,11 +101,7 @@ public class CartFragment extends Fragment {
         productOrderAdapter = new ProductOrderAdapter(new ProductOrderAdapter.IClickProductListener() {
             @Override
             public void clickUpdateQuantity(boolean isAdd, ProductOrder productOrder) {
-                if(isAdd) {
-                    ProductOrderDAO.getInstance(requireContext()).clickUpdateQuantity(productOrder,true);
-                }else{
-                    ProductOrderDAO.getInstance(requireContext()).clickUpdateQuantity(productOrder,false);
-                }
+                ProductOrderDAO.getInstance(requireContext()).clickUpdateQuantity(productOrder, isAdd);
                 reloadData();
             }
 
@@ -116,12 +112,12 @@ public class CartFragment extends Fragment {
 
             @Override
             public void clickShowDetail(Product product) {
-                Intent intent= new Intent(requireContext(), ProductDetailsActivity.class);
+                Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
                 intent.putExtra("product", product);
                 startActivity(intent);
-                requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
             }
-        },false);
+        }, false);
         productOrderAdapter.setData(list);
         rvProductOrder.setAdapter(productOrderAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);

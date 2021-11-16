@@ -1,14 +1,13 @@
 package com.fpoly.pro1121.userapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
@@ -25,8 +24,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String idUserCurrent = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     Button btnAddCart;
-    ImageView imgProduct,ivAddQuantity,ivMinusQuantity;
-    TextView tvName,tvPrice,tvDescription,tvQuantity;
+    ImageView imgProduct, ivAddQuantity, ivMinusQuantity;
+    TextView tvName, tvPrice, tvDescription, tvQuantity;
     Product productCurrent;
     int quantity = 1;
 
@@ -41,34 +40,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void actionAddToCart() {
-        btnAddCart.setOnClickListener(view->{
+        btnAddCart.setOnClickListener(view -> {
             String idProduct = productCurrent.getId();
             int quantityOrder = quantity;
-            ProductOrder productOrder = new ProductOrder(idUserCurrent,idProduct,productCurrent.getPrice(),quantityOrder);
+            ProductOrder productOrder = new ProductOrder(idUserCurrent, idProduct, productCurrent.getPrice(), quantityOrder);
             boolean result = ProductOrderDAO.getInstance(this).insertProductOrder(productOrder);
-            if(result) {
-                Toast.makeText(ProductDetailsActivity.this,"Thêm thành công",Toast.LENGTH_SHORT).show();
+            if (result) {
+                Toast.makeText(ProductDetailsActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void actionQuantity() {
-        ivAddQuantity.setOnClickListener(view->{
+        ivAddQuantity.setOnClickListener(view -> {
             quantity++;
-            tvQuantity.setText(quantity+"");
+            tvQuantity.setText(quantity + "");
         });
-        ivMinusQuantity.setOnClickListener(view->{
+        ivMinusQuantity.setOnClickListener(view -> {
             quantity--;
-            if(quantity<=1){
+            if (quantity <= 1) {
                 quantity = 1;
             }
-            tvQuantity.setText(quantity+"");
+            tvQuantity.setText(quantity + "");
         });
     }
 
     private void getDataToView() {
         Intent intent = getIntent();
-        if(intent !=null){
+        if (intent != null) {
             productCurrent = intent.getParcelableExtra("product");
             tvName.setText(productCurrent.getName());
             tvPrice.setText(Utils.getFormatNumber(productCurrent.getPrice()));
@@ -81,21 +80,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        btnAddCart =findViewById(R.id.btnAddCart);
+        btnAddCart = findViewById(R.id.btnAddCart);
         imgProduct = findViewById(R.id.imgProduct);
         tvName = findViewById(R.id.tvProduct);
         tvPrice = findViewById(R.id.tvPrice);
         tvDescription = findViewById(R.id.tvDescription);
         ivAddQuantity = findViewById(R.id.iv_add_quantity_product);
-        ivMinusQuantity =  findViewById(R.id.iv_minus_quantity_product);
+        ivMinusQuantity = findViewById(R.id.iv_minus_quantity_product);
         tvQuantity = findViewById(R.id.tv_quantity);
-        tvQuantity.setText(quantity+"");
+        tvQuantity.setText(quantity + "");
 
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

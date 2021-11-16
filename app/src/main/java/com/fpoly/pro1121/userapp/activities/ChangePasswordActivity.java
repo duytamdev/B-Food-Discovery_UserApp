@@ -1,16 +1,15 @@
 package com.fpoly.pro1121.userapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
@@ -27,11 +26,12 @@ import java.util.Objects;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    TextInputLayout tilOldPassword,tilNewPassword,tilReNewPassword;
-    EditText edtOldPassword, edtNewPassword,edtReNewPassword;
+    TextInputLayout tilOldPassword, tilNewPassword, tilReNewPassword;
+    EditText edtOldPassword, edtNewPassword, edtReNewPassword;
     Button btnUpdatePassword;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,30 +46,30 @@ public class ChangePasswordActivity extends AppCompatActivity {
         toolbar.setTitle("Change Password");
         toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view-> onBackPressed());
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
     }
 
     private void events() {
-        Utils.addTextChangedListener(edtOldPassword,tilOldPassword,false);
-        Utils.addTextChangedListener(edtNewPassword,tilNewPassword,false);
-        Utils.addTextChangedListener(edtReNewPassword,tilReNewPassword,false);
-        btnUpdatePassword.setOnClickListener(view->{
+        Utils.addTextChangedListener(edtOldPassword, tilOldPassword, false);
+        Utils.addTextChangedListener(edtNewPassword, tilNewPassword, false);
+        Utils.addTextChangedListener(edtReNewPassword, tilReNewPassword, false);
+        btnUpdatePassword.setOnClickListener(view -> {
             String oldPassword = edtOldPassword.getText().toString().trim();
             String newPassword = edtNewPassword.getText().toString().trim();
             String reNewPassword = edtReNewPassword.getText().toString().trim();
-            if(oldPassword.isEmpty()||newPassword.isEmpty()||reNewPassword.isEmpty()){
+            if (oldPassword.isEmpty() || newPassword.isEmpty() || reNewPassword.isEmpty()) {
                 return;
             }
-            if(tilOldPassword.getError()!=null||tilNewPassword.getError()!=null|| tilReNewPassword.getError()!=null){
+            if (tilOldPassword.getError() != null || tilNewPassword.getError() != null || tilReNewPassword.getError() != null) {
                 return;
             }
-            if(!newPassword.equals(reNewPassword)){
+            if (!newPassword.equals(reNewPassword)) {
                 edtNewPassword.setError("Password không trùng khớp");
                 edtReNewPassword.setError("Password không trùng khớp");
                 return;
             }
-            onChangePassword(oldPassword,newPassword);
+            onChangePassword(oldPassword, newPassword);
         });
     }
 
@@ -82,6 +82,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         edtReNewPassword = findViewById(R.id.edt_re_new_password);
         btnUpdatePassword = findViewById(R.id.btn_update_password);
     }
+
     public void onChangePassword(String oldPassword, final String newPassword) {
         ProgressDialog progressDialog = new ProgressDialog(ChangePasswordActivity.this);
         progressDialog.setMessage("Changing password...");
@@ -106,9 +107,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                     @Override
                                                     public void run() {
                                                         finish();
-                                                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+                                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                                                     }
-                                                },1500);
+                                                }, 1500);
                                             }
                                             progressDialog.dismiss();
                                         }
@@ -120,9 +121,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

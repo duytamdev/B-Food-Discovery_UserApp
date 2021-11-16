@@ -9,18 +9,20 @@ import android.widget.ImageView;
 import com.fpoly.pro1121.userapp.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
-public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHolder>{
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHolder> {
 
     int[] imagesSlide;
     Context context;
+
     public SliderAdapter(Context context, int[] imagesSlide) {
         this.context = context;
         this.imagesSlide = imagesSlide;
 
     }
+
     @Override
     public SliderViewHolder onCreateViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.slider_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.slider_item, parent, false);
         return new SliderViewHolder(view);
     }
 
@@ -31,12 +33,13 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHol
 
     @Override
     public int getCount() {
-        if(imagesSlide!=null) return imagesSlide.length;
+        if (imagesSlide != null) return imagesSlide.length;
         return 0;
     }
 
     public class SliderViewHolder extends SliderViewAdapter.ViewHolder {
         public ImageView ivImageSlider;
+
         public SliderViewHolder(View itemView) {
             super(itemView);
             ivImageSlider = itemView.findViewById(R.id.iv_slider);

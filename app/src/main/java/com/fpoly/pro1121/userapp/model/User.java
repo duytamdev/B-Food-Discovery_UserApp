@@ -25,7 +25,12 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.urlImage = urlImage;
     }
-    public void setData(String name, String location, String phoneNumber, String urlImage){
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public void setData(String name, String location, String phoneNumber, String urlImage) {
         this.name = name;
         this.location = location;
         this.phoneNumber = phoneNumber;
@@ -38,10 +43,6 @@ public class User {
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
-    }
-
-    public User(String name) {
-        this.name = name;
     }
 
     public String getPhoneNumber() {

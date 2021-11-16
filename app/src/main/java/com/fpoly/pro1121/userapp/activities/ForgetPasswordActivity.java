@@ -1,16 +1,14 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
@@ -25,6 +23,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     EditText edtEmail;
     Button btnReset;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +38,15 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         toolbar.setTitle("Reset Password");
         toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view-> onBackPressed());
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
     }
 
     private void events() {
-        Utils.addTextChangedListener(edtEmail,tilEmail,true);
-        btnReset.setOnClickListener(view->{
+        Utils.addTextChangedListener(edtEmail, tilEmail, true);
+        btnReset.setOnClickListener(view -> {
             String emailReset = edtEmail.getText().toString().trim();
-            if(emailReset.isEmpty()||tilEmail.getError()!=null){
+            if (emailReset.isEmpty() || tilEmail.getError() != null) {
                 return;
             }
             resetPassword(emailReset);
@@ -60,18 +59,17 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                           new AlertDialog.Builder(ForgetPasswordActivity.this)
-                                   .setMessage("Chúng tôi đã gửi đường đẫn thay đổi mật khẩu đến hộp thư của bạn !")
-                                   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialogInterface, int i) {
+                            new AlertDialog.Builder(ForgetPasswordActivity.this)
+                                    .setMessage("Chúng tôi đã gửi đường đẫn thay đổi mật khẩu đến hộp thư của bạn !")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
                                             finish();
-                                            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-                                       }
-                                   })
-                                   .show();
-                        }
-                        else{
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                                        }
+                                    })
+                                    .show();
+                        } else {
                             new AlertDialog.Builder(ForgetPasswordActivity.this)
                                     .setMessage("Email của bạn không đúng hoặc chưa đăng kí")
                                     .setPositiveButton("Thử lại", null)
@@ -90,6 +88,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

@@ -1,12 +1,12 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
@@ -21,6 +21,7 @@ public class ShowDetailsProductsOrder extends AppCompatActivity {
     RecyclerView rvProductsInOrder;
     ProductOrderAdapter productOrderAdapter;
     List<ProductOrder> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class ShowDetailsProductsOrder extends AppCompatActivity {
         toolbar.setTitle("Your products order");
         toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view-> onBackPressed());
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 
     private void getDataIntent() {
@@ -60,12 +61,12 @@ public class ShowDetailsProductsOrder extends AppCompatActivity {
 
             @Override
             public void clickShowDetail(Product product) {
-                Intent intent= new Intent(ShowDetailsProductsOrder.this, ProductDetailsActivity.class);
+                Intent intent = new Intent(ShowDetailsProductsOrder.this, ProductDetailsActivity.class);
                 intent.putExtra("product", product);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
             }
-        },true);
+        }, true);
         productOrderAdapter.setData(list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvProductsInOrder.setLayoutManager(linearLayoutManager);
@@ -75,6 +76,6 @@ public class ShowDetailsProductsOrder extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

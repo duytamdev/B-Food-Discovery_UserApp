@@ -2,30 +2,25 @@ package com.fpoly.pro1121.userapp.activities;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -57,19 +52,64 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextInputLayout tilEmail,tilPassword;
-    EditText edtEmail,edtPassword;
-    Button btnLogin,btnLoginGoogle,btnLoginFacebook;
-    TextView tvSignup,tvForgetPassword;
-    private FirebaseAuth mAuth;
+    TextInputLayout tilEmail, tilPassword;
+    EditText edtEmail, edtPassword;
+    Button btnLogin, btnLoginGoogle, btnLoginFacebook;
+    TextView tvSignup, tvForgetPassword;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     GoogleSignInClient googleSignInClient;
     CallbackManager callbackManager;
+    private FirebaseAuth mAuth;
+    public final ActivityResultLauncher<Intent> googleResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == RESULT_OK) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    firebaseAuthWithGoogle(account.getIdToken());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    });
+
+    public static String printKeyHash(Activity context) {
+        PackageInfo packageInfo;
+        String key = null;
+        try {
+            //getting application package name, as defined in manifest
+            String packageName = context.getApplicationContext().getPackageName();
+
+            //Retriving package info
+            packageInfo = context.getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.e("Package Name=", context.getApplicationContext().getPackageName());
+
+            for (android.content.pm.Signature signature : packageInfo.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                key = new String(Base64.encode(md.digest(), 0));
+
+                // String key = new String(Base64.encodeBytes(md.digest()));
+                Log.e("Key Hash=", key);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("Name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("No such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
+
+        return key;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         callbackManager = CallbackManager.Factory.create();
@@ -118,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser userFb = mAuth.getCurrentUser();
-                            User user = new User(userFb.getUid(),userFb.getDisplayName(),"","","",false);
+                            User user = new User(userFb.getUid(), userFb.getDisplayName(), "", "", "", false);
 
                             db.collection("users")
                                     .document(user.getId())
@@ -132,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                                             LENGTH_SHORT).show();
                                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                                                     finish();
                                                 } else {
                                                     addUserToDatabase(user);
@@ -155,12 +195,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
     private void initUI() {
         tvForgetPassword = findViewById(R.id.tv_forget_password);
         edtEmail = findViewById(R.id.edt_email_login);
-        edtPassword =  findViewById(R.id.edt_password_login);
-        btnLogin =  findViewById(R.id.btnLogin);
+        edtPassword = findViewById(R.id.edt_password_login);
+        btnLogin = findViewById(R.id.btnLogin);
         tvSignup = findViewById(R.id.tvSignup);
         btnLoginGoogle = findViewById(R.id.btn_login_google);
         btnLoginFacebook = findViewById(R.id.btn_login_facebook);
@@ -169,38 +208,38 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void events() {
-        Utils.addTextChangedListener(edtEmail,tilEmail,true);
-        Utils.addTextChangedListener(edtPassword,tilPassword,false);
+        Utils.addTextChangedListener(edtEmail, tilEmail, true);
+        Utils.addTextChangedListener(edtPassword, tilPassword, false);
         tvSignup.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
-            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         });
         btnLogin.setOnClickListener(view -> {
-           try {
-               String email = edtEmail.getText().toString();
-               String  password = edtPassword.getText().toString();
-               // if validate không cho phép đăng nhập
-               if(email.trim().isEmpty()|| password.trim().isEmpty()) {
-                   return;
-               }
-               if((tilEmail.getError()!=null)|| (tilPassword.getError()!=null)){
-                   return;
-               }
-               actionSignIn(email,password);
+            try {
+                String email = edtEmail.getText().toString();
+                String password = edtPassword.getText().toString();
+                // if validate không cho phép đăng nhập
+                if (email.trim().isEmpty() || password.trim().isEmpty()) {
+                    return;
+                }
+                if ((tilEmail.getError() != null) || (tilPassword.getError() != null)) {
+                    return;
+                }
+                actionSignIn(email, password);
 
-           }catch (IllegalArgumentException illegalArgumentException){
-               Toast.makeText(LoginActivity.this,"Vui lòng điền thông tin",LENGTH_SHORT).show();
-           }catch(Exception e){
-               Toast.makeText(LoginActivity.this,e.getMessage(),LENGTH_SHORT).show();
-           }
+            } catch (IllegalArgumentException illegalArgumentException) {
+                Toast.makeText(LoginActivity.this, "Vui lòng điền thông tin", LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(LoginActivity.this, e.getMessage(), LENGTH_SHORT).show();
+            }
         });
-        tvForgetPassword.setOnClickListener(view->{
+        tvForgetPassword.setOnClickListener(view -> {
             startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
-            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         });
     }
 
-    private void actionSignIn(String email,String password) {
+    private void actionSignIn(String email, String password) {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage("Loading ...");
         progressDialog.show();
@@ -213,7 +252,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                     LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Email hoặc password không chính xác",
@@ -223,31 +262,19 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void loginGoogle(){
+
+    private void loginGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        googleSignInClient   = GoogleSignIn.getClient(this,gso);
-        btnLoginGoogle.setOnClickListener(view->{
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        btnLoginGoogle.setOnClickListener(view -> {
             Intent intent = googleSignInClient.getSignInIntent();
             googleResultLauncher.launch(intent);
         });
     }
-   public final ActivityResultLauncher<Intent> googleResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-       @Override
-       public void onActivityResult(ActivityResult result) {
-            if(result.getResultCode() == RESULT_OK){
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseAuthWithGoogle(account.getIdToken());
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-       }
-   });
+
     private void firebaseAuthWithGoogle(String idToken) {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage("Loading ...");
@@ -259,8 +286,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser userGG  = mAuth.getCurrentUser();
-                            User user = new User(userGG.getUid(),userGG.getDisplayName(),"","","",false);
+                            FirebaseUser userGG = mAuth.getCurrentUser();
+                            User user = new User(userGG.getUid(), userGG.getDisplayName(), "", "", "", false);
                             db.collection("users")
                                     .document(user.getId())
                                     .get()
@@ -273,10 +300,10 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                                             LENGTH_SHORT).show();
                                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                                                     finish();
                                                 } else {
-                                                   addUserToDatabase(user);
+                                                    addUserToDatabase(user);
                                                 }
                                                 progressDialog.dismiss();
                                             } else {
@@ -286,7 +313,6 @@ public class LoginActivity extends AppCompatActivity {
                                     });
 
 
-
 //
                         } else {
                             // If sign in fails, display a message to the user.
@@ -294,6 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void addUserToDatabase(User user) {
         db.collection("users")
                 .document(user.getId())
@@ -304,42 +331,12 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
                                 LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                         finish();
                     }
                 });
     }
-    public static String printKeyHash(Activity context) {
-        PackageInfo packageInfo;
-        String key = null;
-        try {
-            //getting application package name, as defined in manifest
-            String packageName = context.getApplicationContext().getPackageName();
 
-            //Retriving package info
-            packageInfo = context.getPackageManager().getPackageInfo(packageName,
-                    PackageManager.GET_SIGNATURES);
-
-            Log.e("Package Name=", context.getApplicationContext().getPackageName());
-
-            for (android.content.pm.Signature signature : packageInfo.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                key = new String(Base64.encode(md.digest(), 0));
-
-                // String key = new String(Base64.encodeBytes(md.digest()));
-                Log.e("Key Hash=", key);
-            }
-        } catch (PackageManager.NameNotFoundException e1) {
-            Log.e("Name not found", e1.toString());
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("No such an algorithm", e.toString());
-        } catch (Exception e) {
-            Log.e("Exception", e.toString());
-        }
-
-        return key;
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

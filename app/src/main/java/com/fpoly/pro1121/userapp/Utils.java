@@ -9,37 +9,37 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
 
     @SuppressLint("SimpleDateFormat")
-   public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("dd\nMMM");
 
 
-    public static String DateToString(Date date){
-        return simpleDateFormat.format(date).toString();
+    public static String DateToString(Date date) {
+        return simpleDateFormat.format(date);
     }
-    public static Date StringToDate(String sDate){
+
+    public static Date StringToDate(String sDate) {
         try {
-            return  simpleDateFormat.parse(sDate);
+            return simpleDateFormat.parse(sDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public  static String DateToStringMonth(Date date){
+
+    public static String DateToStringMonth(Date date) {
         return formatMonth.format(date);
     }
+
     public static String getFormatNumber(int number) {
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
@@ -50,7 +50,7 @@ public class Utils {
         e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b&& e.getText().toString().isEmpty()){
+                if (b && e.getText().toString().isEmpty()) {
                     t.setEnabled(true);
                     t.setError("Không được để trống");
                 }
@@ -63,15 +63,13 @@ public class Utils {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length()<=0) {
+                if (s.length() <= 0) {
                     t.setEnabled(true);
                     t.setError("Không được để trống");
-                }
-                else if(isEmail && !Patterns.EMAIL_ADDRESS.matcher(s).matches()){
+                } else if (isEmail && !Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
                     t.setEnabled(true);
                     t.setError("Email không hợp lệ");
-                }
-                else{
+                } else {
                     t.setError(null);
                     t.setErrorEnabled(false);
                 }

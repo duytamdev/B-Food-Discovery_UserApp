@@ -17,11 +17,15 @@ public class PagerMainAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch(position){
-            case 0: return new HomeFragment();
-            case 1: return new CartFragment();
-            case 2: return new AccountFragment();
-            default: return  new HomeFragment();
+        switch (position) {
+            case 0:
+                return new HomeFragment();
+            case 1:
+                return new CartFragment();
+            case 2:
+                return new AccountFragment();
+            default:
+                return new HomeFragment();
         }
     }
 

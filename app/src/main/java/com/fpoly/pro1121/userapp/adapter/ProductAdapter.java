@@ -19,14 +19,10 @@ import com.fpoly.pro1121.userapp.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     List<Product> list = new ArrayList<>();
     List<Product> clones = new ArrayList<>();
-
-    public interface IClickProductListener {
-        void  clickShowDetail(Product product);
-    }
     IClickProductListener iClickProductListener;
 
     public ProductAdapter(IClickProductListener iClickProductListener) {
@@ -34,39 +30,41 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<Product> list){
+    public void setData(List<Product> list) {
         this.list = list;
-        if(this.list!=null){
+        if (this.list != null) {
             clones.addAll(this.list);
         }
         notifyDataSetChanged();
     }
+
     public void filter(String text) {
         list.clear();
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             list.addAll(clones);
-        } else{
+        } else {
             text = text.toLowerCase();
-            Log.d("-", "filter: "+text);
-            for(Product item: clones){
-                if(item.getName().toLowerCase().contains(text)){
+            Log.d("-", "filter: " + text);
+            for (Product item : clones) {
+                if (item.getName().toLowerCase().contains(text)) {
                     list.add(item);
                 }
             }
         }
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product,parent,false);
-          return new ProductViewHolder(mView);
+        View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        return new ProductViewHolder(mView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = list.get(position);
-        if(product==null) return;
+        if (product == null) return;
         holder.tvName.setText(product.getName());
         holder.tvPrice.setText(Utils.getFormatNumber(product.getPrice()));
         Glide
@@ -79,13 +77,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public int getItemCount() {
-        if(list!=null) return list.size();
+        if (list != null) return list.size();
         return 0;
+    }
+
+    public interface IClickProductListener {
+        void clickShowDetail(Product product);
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView tvName,tvPrice;
+        TextView tvName, tvPrice;
+
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.iv_product_item);

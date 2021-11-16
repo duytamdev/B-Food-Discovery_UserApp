@@ -33,14 +33,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AccountFragment extends Fragment {
     CircleImageView imgAvt;
     TextView tvNameUser;
-    TextView tvEditProfile,tvOrderHistory,tvChangePassword,tvChatWithMe,tvLogOut;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    TextView tvEditProfile, tvOrderHistory, tvChangePassword, tvChatWithMe, tvLogOut;
     View mView;
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_account,container,false);
+        mView = inflater.inflate(R.layout.fragment_account, container, false);
         initUI();
         actionClickCollections();
         return mView;
@@ -48,28 +49,29 @@ public class AccountFragment extends Fragment {
     }
 
     private void actionClickCollections() {
-        tvEditProfile.setOnClickListener(view ->startMyActivity(EditProfileActivity.class));
-        tvLogOut.setOnClickListener(view ->{
-           new AlertDialog.Builder(requireContext())
-                   .setTitle("Xác Nhận")
-                   .setMessage("Bạn Thật Sự Muốn Đăng Xuất ?")
-                   .setPositiveButton("Đăng Xuất", new DialogInterface.OnClickListener() {
-                       @Override
-                       public void onClick(DialogInterface dialogInterface, int i) {
-                           mAuth.signOut();
-                           startMyActivity(LoginActivity.class);
-                       }
-                   })
-                   .setNegativeButton("Huỷ",null)
-                   .show();
+        tvEditProfile.setOnClickListener(view -> startMyActivity(EditProfileActivity.class));
+        tvLogOut.setOnClickListener(view -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Xác Nhận")
+                    .setMessage("Bạn Thật Sự Muốn Đăng Xuất ?")
+                    .setPositiveButton("Đăng Xuất", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            mAuth.signOut();
+                            startMyActivity(LoginActivity.class);
+                        }
+                    })
+                    .setNegativeButton("Huỷ", null)
+                    .show();
         });
-        tvOrderHistory.setOnClickListener(view ->startMyActivity(OrderHistoryActivity.class));
-        tvChangePassword.setOnClickListener(view-> startMyActivity(ChangePasswordActivity.class));
+        tvOrderHistory.setOnClickListener(view -> startMyActivity(OrderHistoryActivity.class));
+        tvChangePassword.setOnClickListener(view -> startMyActivity(ChangePasswordActivity.class));
     }
-    private void startMyActivity(Class <?> cls){
-        Intent intent = new Intent(requireContext(),cls);
+
+    private void startMyActivity(Class<?> cls) {
+        Intent intent = new Intent(requireContext(), cls);
         startActivity(intent);
-        requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
     private void loadDataUser() {
@@ -77,24 +79,24 @@ public class AccountFragment extends Fragment {
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     assert document != null;
-                    if(document.exists()){
-                       try {
-                           Map<String,Object> data = document.getData();
-                           String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
-                           if(Objects.requireNonNull(urlImage).length()>0){
-                               Glide.with(requireContext())
-                                       .load(urlImage)
-                                       .centerCrop()
-                                       .into(imgAvt);
-                           }
-                           String name = (String) data.get("name");
-                           tvNameUser.setText(name);
-                       }catch(Exception e){
-                           e.printStackTrace();
-                       }
+                    if (document.exists()) {
+                        try {
+                            Map<String, Object> data = document.getData();
+                            String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
+                            if (Objects.requireNonNull(urlImage).length() > 0) {
+                                Glide.with(requireContext())
+                                        .load(urlImage)
+                                        .centerCrop()
+                                        .into(imgAvt);
+                            }
+                            String name = (String) data.get("name");
+                            tvNameUser.setText(name);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
