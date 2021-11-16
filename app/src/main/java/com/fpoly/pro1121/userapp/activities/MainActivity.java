@@ -2,6 +2,7 @@ package com.fpoly.pro1121.userapp.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     ChipNavigationBar bottomNavigationBar;
     ViewPager2 viewPagerMain;
     PagerMainAdapter pageMainAdapter;
+    int touchBack = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,5 +77,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.doubleBackToExitPressedOnce = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this,"Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
     }
 }
