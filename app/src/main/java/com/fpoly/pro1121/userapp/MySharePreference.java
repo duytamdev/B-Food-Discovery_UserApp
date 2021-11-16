@@ -30,4 +30,12 @@ public class MySharePreference {
     public boolean getBoolean(String key) {
         return sharedPreferences.getBoolean(key, false);
     }
+
+    public void putString(String key, String value){
+        editor.putString(key, value);
+        editor.commit();
+    }
+    public String getString(String key) {
+        return sharedPreferences.getString(key, null);
+    }
 }
