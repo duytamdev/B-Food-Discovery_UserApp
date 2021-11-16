@@ -49,9 +49,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void events() {
-        Utils.addTextChangedListener(edtOldPassword, tilOldPassword, false);
-        Utils.addTextChangedListener(edtNewPassword, tilNewPassword, false);
-        Utils.addTextChangedListener(edtReNewPassword, tilReNewPassword, false);
+        Utils.addTextChangedListenerPass(edtOldPassword, tilOldPassword);
+        Utils.addTextChangedListenerPass(edtNewPassword, tilNewPassword);
+        Utils.addTextChangedListenerPass(edtReNewPassword, tilReNewPassword);
         btnUpdatePassword.setOnClickListener(view -> {
             String oldPassword = edtOldPassword.getText().toString().trim();
             String newPassword = edtNewPassword.getText().toString().trim();

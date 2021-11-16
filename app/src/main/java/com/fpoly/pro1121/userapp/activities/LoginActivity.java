@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void events() {
         Utils.addTextChangedListener(edtEmail, tilEmail, true);
-        Utils.addTextChangedListener(edtPassword, tilPassword, false);
+        Utils.addTextChangedListenerPass(edtPassword, tilPassword);
         tvSignup.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);

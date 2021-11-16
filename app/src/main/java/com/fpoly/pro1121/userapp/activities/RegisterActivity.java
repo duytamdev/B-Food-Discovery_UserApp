@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void events() {
         Utils.addTextChangedListener(edtFullName, tilName, false);
         Utils.addTextChangedListener(edtEmail, tilEmail, true);
-        Utils.addTextChangedListener(edtPassword, tilPassword, false);
+        Utils.addTextChangedListenerPass(edtPassword, tilPassword);
         Utils.addTextChangedListener(edtPhone, tilPhone, false);
         Utils.addTextChangedListener(edtLocation, tilLocation, false);
 

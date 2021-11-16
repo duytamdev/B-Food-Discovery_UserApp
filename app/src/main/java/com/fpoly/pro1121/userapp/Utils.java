@@ -22,23 +22,8 @@ import java.util.Locale;
 public class Utils {
 
     @SuppressLint("SimpleDateFormat")
-    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("dd\nMMM");
 
-
-    public static String DateToString(Date date) {
-        return simpleDateFormat.format(date);
-    }
-
-    public static Date StringToDate(String sDate) {
-        try {
-            return simpleDateFormat.parse(sDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public static String DateToStringMonth(Date date) {
         return formatMonth.format(date);
@@ -49,15 +34,45 @@ public class Utils {
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
         return (currencyVN.format(number));
     }
-
-    public static void addTextChangedListener(EditText e, final TextInputLayout t, boolean isEmail) {
-        e.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+    public static void addTextChangedListenerPass(EditText e, final TextInputLayout t){
+        e.setOnFocusChangeListener((view, b) -> {
+            if (b && e.getText().toString().isEmpty()) {
+                t.setEnabled(true);
+                t.setError("Không được để trống");
+            }
+        });
+        e.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b && e.getText().toString().isEmpty()) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() <= 0) {
                     t.setEnabled(true);
                     t.setError("Không được để trống");
                 }
+                if(charSequence.length()<6){
+                    t.setEnabled(true);
+                    t.setError("Mật khẩu không thể dưới 6 kí tự");
+                } else {
+                    t.setError(null);
+                    t.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+    public static void addTextChangedListener(EditText e, final TextInputLayout t, boolean isEmail) {
+        e.setOnFocusChangeListener((view, b) -> {
+            if (b && e.getText().toString().isEmpty()) {
+                t.setEnabled(true);
+                t.setError("Không được để trống");
             }
         });
         e.addTextChangedListener(new TextWatcher() {

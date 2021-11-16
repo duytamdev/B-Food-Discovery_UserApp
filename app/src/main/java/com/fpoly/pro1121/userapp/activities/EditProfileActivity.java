@@ -40,7 +40,7 @@ public class EditProfileActivity extends AppCompatActivity {
     CircleImageView imgAvt;
     EditText edtName, edtPhone, edtLocation;
     Button btnUpdate;
-    String urlImageSelected;
+    String urlImageSelected="";
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
