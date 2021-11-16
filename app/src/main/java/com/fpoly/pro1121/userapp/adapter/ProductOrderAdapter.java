@@ -34,6 +34,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
     public interface IClickProductListener{
         void clickUpdateQuantity(boolean isAdd,ProductOrder productOrder);
         void clickDelete(int idProductOrder);
+        void clickShowDetail(Product product);
     }
     IClickProductListener iClickProductListener;
     boolean isOrderHistory;
@@ -68,15 +69,22 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                     assert document != null;
                     if(document.exists()){
                         Map<String,Object> data = document.getData();
-                        assert data != null;
+                        String id = (String) data.get("id");
                         String name = (String) data.get("name");
+                        int price =( (Long) data.get("price")).intValue();
+                        String categoryID = (String) data.get("categoryID");
                         String urlImage = (String) data.get("urlImage");
+                        String description = (String) data.get("description");
+                        Product product = new Product(id,urlImage,name,price,description,categoryID);
+
 
                         Glide.with(holder.itemView.getContext())
                                 .load(urlImage)
                                 .centerCrop()
                                 .into(holder.ivImage);
                         holder.tvName.setText(name);
+                        holder.tvName.setOnClickListener(view->iClickProductListener.clickShowDetail(product));
+                        holder.ivImage.setOnClickListener(view-> iClickProductListener.clickShowDetail(product));
                     }
                 }
             }

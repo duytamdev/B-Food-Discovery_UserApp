@@ -22,9 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.activities.OrderComplete;
+import com.fpoly.pro1121.userapp.activities.ProductDetailsActivity;
+import com.fpoly.pro1121.userapp.activities.ShowDetailsProductsOrder;
 import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
 import com.fpoly.pro1121.userapp.database.ProductOrderDAO;
 import com.fpoly.pro1121.userapp.model.Order;
+import com.fpoly.pro1121.userapp.model.Product;
 import com.fpoly.pro1121.userapp.model.ProductOrder;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,6 +112,14 @@ public class CartFragment extends Fragment {
             @Override
             public void clickDelete(int idProductOrder) {
                 deleteProductOrder(idProductOrder);
+            }
+
+            @Override
+            public void clickShowDetail(Product product) {
+                Intent intent= new Intent(requireContext(), ProductDetailsActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
+                requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
             }
         },false);
         productOrderAdapter.setData(list);

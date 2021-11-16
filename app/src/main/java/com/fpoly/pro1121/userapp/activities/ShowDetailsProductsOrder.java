@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
+import com.fpoly.pro1121.userapp.model.Product;
 import com.fpoly.pro1121.userapp.model.ProductOrder;
 
 import java.util.ArrayList;
@@ -55,6 +56,14 @@ public class ShowDetailsProductsOrder extends AppCompatActivity {
             @Override
             public void clickDelete(int idProductOrder) {
 
+            }
+
+            @Override
+            public void clickShowDetail(Product product) {
+                Intent intent= new Intent(ShowDetailsProductsOrder.this, ProductDetailsActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
             }
         },true);
         productOrderAdapter.setData(list);
