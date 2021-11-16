@@ -1,6 +1,5 @@
 package com.fpoly.pro1121.userapp.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import com.fpoly.pro1121.userapp.activities.ChangePasswordActivity;
 import com.fpoly.pro1121.userapp.activities.EditProfileActivity;
 import com.fpoly.pro1121.userapp.activities.LoginActivity;
 import com.fpoly.pro1121.userapp.activities.OrderHistoryActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,20 +47,16 @@ public class AccountFragment extends Fragment {
 
     private void actionClickCollections() {
         tvEditProfile.setOnClickListener(view -> startMyActivity(EditProfileActivity.class));
-        tvLogOut.setOnClickListener(view -> {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Xác Nhận")
-                    .setMessage("Bạn Thật Sự Muốn Đăng Xuất ?")
-                    .setPositiveButton("Đăng Xuất", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            mAuth.signOut();
-                            startMyActivity(LoginActivity.class);
-                        }
-                    })
-                    .setNegativeButton("Huỷ", null)
-                    .show();
-        });
+        tvLogOut.setOnClickListener(view -> new AlertDialog.Builder(requireContext())
+                .setTitle("Xác Nhận")
+                .setMessage("Bạn Thật Sự Muốn Đăng Xuất ?")
+                .setPositiveButton("Đăng Xuất", (dialogInterface, i) -> {
+                    mAuth.signOut();
+                    startMyActivity(LoginActivity.class);
+                    requireActivity().finish();
+                })
+                .setNegativeButton("Huỷ", null)
+                .show());
         tvOrderHistory.setOnClickListener(view -> startMyActivity(OrderHistoryActivity.class));
         tvChangePassword.setOnClickListener(view -> startMyActivity(ChangePasswordActivity.class));
     }
@@ -75,32 +68,29 @@ public class AccountFragment extends Fragment {
     }
 
     private void loadDataUser() {
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        try {
-                            Map<String, Object> data = document.getData();
-                            String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
-                            if (Objects.requireNonNull(urlImage).length() > 0) {
-                                Glide.with(requireContext())
-                                        .load(urlImage)
-                                        .centerCrop()
-                                        .into(imgAvt);
+        db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        assert document != null;
+                        if (document.exists()) {
+                            try {
+                                Map<String, Object> data = document.getData();
+                                String urlImage = (String) Objects.requireNonNull(data).get("urlImage");
+                                if (Objects.requireNonNull(urlImage).length() > 0) {
+                                    Glide.with(requireContext())
+                                            .load(urlImage)
+                                            .centerCrop()
+                                            .into(imgAvt);
+                                }
+                                String name = (String) data.get("name");
+                                tvNameUser.setText(name);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            String name = (String) data.get("name");
-                            tvNameUser.setText(name);
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            }
-        });
+                });
     }
 
     private void initUI() {

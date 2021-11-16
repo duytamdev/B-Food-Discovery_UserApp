@@ -2,7 +2,6 @@ package com.fpoly.pro1121.userapp.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import com.fpoly.pro1121.userapp.database.ProductOrderDAO;
 import com.fpoly.pro1121.userapp.model.Order;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.fpoly.pro1121.userapp.model.ProductOrder;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -78,15 +76,12 @@ public class CartFragment extends Fragment {
                 db.collection("orders")
                         .document(order.getId())
                         .set(order)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                progressDialog.dismiss();
-                                startActivity(new Intent(requireContext(), OrderComplete.class));
-                                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                                // clear cart
-                                ProductOrderDAO.getInstance(requireContext()).deleteAllProductOrder(order.getUserID());
-                            }
+                        .addOnSuccessListener(unused -> {
+                            progressDialog.dismiss();
+                            startActivity(new Intent(requireContext(), OrderComplete.class));
+                            requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                            // clear cart
+                            ProductOrderDAO.getInstance(requireContext()).deleteAllProductOrder(order.getUserID());
                         });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,14 +123,11 @@ public class CartFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Xác Nhận")
                 .setMessage("Xoá đồ ăn này ra khỏi giỏ hàng ? ")
-                .setPositiveButton("Xoá", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean result = ProductOrderDAO.getInstance(requireContext()).deleteProductOrder(idProductOrder);
-                        if (result) {
-                            Toast.makeText(requireContext(), "Product Order deleted", Toast.LENGTH_SHORT).show();
-                            reloadData();
-                        }
+                .setPositiveButton("Xoá", (dialogInterface, i) -> {
+                    boolean result = ProductOrderDAO.getInstance(requireContext()).deleteProductOrder(idProductOrder);
+                    if (result) {
+                        Toast.makeText(requireContext(), "Product Order deleted", Toast.LENGTH_SHORT).show();
+                        reloadData();
                     }
                 })
                 .setNegativeButton("Huỷ", null)

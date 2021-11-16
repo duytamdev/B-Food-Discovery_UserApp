@@ -21,10 +21,6 @@
             android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_main_fragment"
-            android:iconifiedByDefault="false"
-            android:maxLines="1"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
             android:queryHint="Search"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_searchview"

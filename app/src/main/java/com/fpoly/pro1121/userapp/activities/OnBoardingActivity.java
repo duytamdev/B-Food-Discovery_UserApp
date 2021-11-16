@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fpoly.pro1121.userapp.R;
 import com.ramotion.paperonboarding.PaperOnboardingEngine;
 import com.ramotion.paperonboarding.PaperOnboardingPage;
-import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
 
 import java.util.ArrayList;
 
@@ -22,14 +21,11 @@ public class OnBoardingActivity extends AppCompatActivity {
         PaperOnboardingEngine engine = new PaperOnboardingEngine(findViewById(R.id.onboardingRootView),
                 getPaperBoardingPageData(), this);
 
-        engine.setOnRightOutListener(new PaperOnboardingOnRightOutListener() {
-            @Override
-            public void onRightOut() {
-                Intent intent = new Intent(OnBoardingActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                finish();
-            }
+        engine.setOnRightOutListener(() -> {
+            Intent intent = new Intent(OnBoardingActivity.this, LoginActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            finish();
         });
 
     }

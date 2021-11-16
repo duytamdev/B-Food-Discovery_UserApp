@@ -37,7 +37,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHol
         return 0;
     }
 
-    public class SliderViewHolder extends SliderViewAdapter.ViewHolder {
+    public static class SliderViewHolder extends SliderViewAdapter.ViewHolder {
         public ImageView ivImageSlider;
 
         public SliderViewHolder(View itemView) {

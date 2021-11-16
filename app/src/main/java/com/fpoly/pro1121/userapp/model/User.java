@@ -26,9 +26,6 @@ public class User {
         this.urlImage = urlImage;
     }
 
-    public User(String name) {
-        this.name = name;
-    }
 
     public void setData(String name, String location, String phoneNumber, String urlImage) {
         this.name = name;

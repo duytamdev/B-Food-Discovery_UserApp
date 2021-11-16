@@ -7,14 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -92,32 +90,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(currentEmail, oldPassword);
 
         firebaseUser.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            firebaseUser.updatePassword(newPassword)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(ChangePasswordActivity.this, "Password was changed successfully", Toast.LENGTH_LONG).show();
-                                                new Handler().postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        finish();
-                                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-                                                    }
-                                                }, 1500);
-                                            }
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-                        } else {
-                            tilOldPassword.setError("Mật khẩu cũ không chính xác");
-                            progressDialog.dismiss();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        firebaseUser.updatePassword(newPassword)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Toast.makeText(ChangePasswordActivity.this, "Password was changed successfully", Toast.LENGTH_LONG).show();
+                                        new Handler().postDelayed(() -> {
+                                            finish();
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                                        }, 1500);
+                                    }
+                                    progressDialog.dismiss();
+                                });
+                    } else {
+                        tilOldPassword.setError("Mật khẩu cũ không chính xác");
+                        progressDialog.dismiss();
                     }
                 });
     }

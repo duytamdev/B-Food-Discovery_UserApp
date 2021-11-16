@@ -38,6 +38,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String text) {
         list.clear();
         if (text.isEmpty()) {
@@ -85,7 +86,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         void clickShowDetail(Product product);
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView tvName, tvPrice;
 

@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     ChipNavigationBar bottomNavigationBar;
     ViewPager2 viewPagerMain;
     PagerMainAdapter pageMainAdapter;
-    int touchBack = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerMain = findViewById(R.id.viewpager2_main);
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void initViewPager() {
         pageMainAdapter = new PagerMainAdapter(this);
         viewPagerMain.setAdapter(pageMainAdapter);
@@ -40,15 +40,13 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 // connect với bottom nav
                 switch (position) {
-                    case 0:
-                        bottomNavigationBar.setItemSelected(R.id.action_home, true);
-                        break;
                     case 1:
                         bottomNavigationBar.setItemSelected(R.id.action_cart, true);
                         break;
                     case 2:
                         bottomNavigationBar.setItemSelected(R.id.action_account, true);
                         break;
+                    case 0:
                     default:
                         bottomNavigationBar.setItemSelected(R.id.action_home, true);
                         break;
@@ -56,25 +54,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         viewPagerMain.setUserInputEnabled(false); // ko cho người dùng trượt để chuyển fragment
-        bottomNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onItemSelected(int i) {
-                // connect với viewpager2
-                switch (i) {
-                    case R.id.action_home:
-                        viewPagerMain.setCurrentItem(0);
-                        break;
-                    case R.id.action_cart:
-                        viewPagerMain.setCurrentItem(1);
-                        break;
-                    case R.id.action_account:
-                        viewPagerMain.setCurrentItem(2);
-                        break;
-                    default:
-                        viewPagerMain.setCurrentItem(0);
-                        break;
-                }
+        bottomNavigationBar.setOnItemSelectedListener(i -> {
+            // connect với viewpager2
+            switch (i) {
+                case R.id.action_cart:
+                    viewPagerMain.setCurrentItem(1);
+                    break;
+                case R.id.action_account:
+                    viewPagerMain.setCurrentItem(2);
+                    break;
+                case R.id.action_home:
+                default:
+                    viewPagerMain.setCurrentItem(0);
+                    break;
             }
         });
     }

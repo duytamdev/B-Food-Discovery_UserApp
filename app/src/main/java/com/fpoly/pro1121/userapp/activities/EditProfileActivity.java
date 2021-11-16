@@ -12,7 +12,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -20,8 +19,6 @@ import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.User;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,28 +53,23 @@ public class EditProfileActivity extends AppCompatActivity {
                             progressDialog.setMessage("loading....");
                             progressDialog.show();
 
+                            assert data != null;
                             Uri uriImage = data.getData();
                             imgAvt.setImageURI(uriImage); // dom
                             StorageReference ref = FirebaseStorage.getInstance().getReference().child("imagesUser").child(UUID.randomUUID().toString());
                             UploadTask uploadTask = ref.putFile(uriImage);
 
 
-                            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                @Override
-                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                    if (!task.isSuccessful()) {
-                                        throw task.getException();
-                                    }
-
-                                    return ref.getDownloadUrl();
+                            Task<Uri> uriTask = uploadTask.continueWithTask(task -> {
+                                if (!task.isSuccessful()) {
+                                    throw Objects.requireNonNull(task.getException());
                                 }
-                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        urlImageSelected = task.getResult().toString();
-                                        progressDialog.dismiss();
-                                    }
+
+                                return ref.getDownloadUrl();
+                            }).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    urlImageSelected = task.getResult().toString();
+                                    progressDialog.dismiss();
                                 }
                             });
 
@@ -144,45 +137,40 @@ public class EditProfileActivity extends AppCompatActivity {
                         "phoneNumber", userCurrentUser.getPhoneNumber(),
                         "urlImage", userCurrentUser.getUrlImage(),
                         "location", userCurrentUser.getLocation())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(EditProfileActivity.this, "Cập Nhật Thành Công ", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(EditProfileActivity.this, "Cập Nhật Thành Công ", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }
 
     private void getDataFireBase() {
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        try {
-                            Map<String, Object> data = document.getData();
-                            assert data != null;
-                            String id = (String) data.get("id");
-                            String name = (String) data.get("name");
-                            String urlImage = (String) data.get("urlImage");
-                            String location = (String) data.get("location");
-                            String phone = (String) data.get("phoneNumber");
-                            if (urlImage.length() > 0) {
-                                urlImageSelected = urlImage;
+        db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            try {
+                                Map<String, Object> data = document.getData();
+                                assert data != null;
+                                String id = (String) data.get("id");
+                                String name = (String) data.get("name");
+                                String urlImage = (String) data.get("urlImage");
+                                String location = (String) data.get("location");
+                                String phone = (String) data.get("phoneNumber");
+                                assert urlImage != null;
+                                if (urlImage.length() > 0) {
+                                    urlImageSelected = urlImage;
+                                }
+                                userCurrentUser = new User(id, name, location, phone, urlImage);
+                                DOMUser(userCurrentUser);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            userCurrentUser = new User(id, name, location, phone, urlImage);
-                            DOMUser(userCurrentUser);
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-            }
-        });
+                });
     }
 
     private void initUI() {

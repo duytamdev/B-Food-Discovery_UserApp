@@ -58,7 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         void clickShowDetail(List<ProductOrder> list);
     }
 
-    public class OrderViewHolder extends RecyclerView.ViewHolder {
+    public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvUnitPrice;
 
         public OrderViewHolder(@NonNull View itemView) {

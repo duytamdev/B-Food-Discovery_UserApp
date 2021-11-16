@@ -1,5 +1,6 @@
 package com.fpoly.pro1121.userapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,16 +26,11 @@ import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
 import com.fpoly.pro1121.userapp.adapter.SliderAdapter;
 import com.fpoly.pro1121.userapp.model.Category;
 import com.fpoly.pro1121.userapp.model.Product;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -80,28 +76,25 @@ public class HomeFragment extends Fragment {
 
     private void realTimeDataBase() {
         db.collection("categories")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (value != null) {
-                            try {
-                                List<Category> clones = new ArrayList<>();
-                                List<DocumentSnapshot> snapshotsList = value.getDocuments();
-                                for (DocumentSnapshot snapshot : snapshotsList) {
-                                    Map<String, Object> data = snapshot.getData();
-                                    assert data != null;
-                                    String id = Objects.requireNonNull(data.get("id")).toString();
-                                    String name = Objects.requireNonNull(data.get("name")).toString();
-                                    String urlImage = Objects.requireNonNull(data.get("urlImage")).toString();
-                                    Category category = new Category(id, name, urlImage);
-                                    clones.add(category);
-                                }
-                                listCategories = new ArrayList<>();
-                                listCategories.addAll(clones);
-                                categoryAdapter.setData(listCategories);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                .addSnapshotListener((value, error) -> {
+                    if (value != null) {
+                        try {
+                            List<Category> clones = new ArrayList<>();
+                            List<DocumentSnapshot> snapshotsList = value.getDocuments();
+                            for (DocumentSnapshot snapshot : snapshotsList) {
+                                Map<String, Object> data = snapshot.getData();
+                                assert data != null;
+                                String id = Objects.requireNonNull(data.get("id")).toString();
+                                String name = Objects.requireNonNull(data.get("name")).toString();
+                                String urlImage = Objects.requireNonNull(data.get("urlImage")).toString();
+                                Category category = new Category(id, name, urlImage);
+                                clones.add(category);
                             }
+                            listCategories = new ArrayList<>();
+                            listCategories.addAll(clones);
+                            categoryAdapter.setData(listCategories);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -127,12 +120,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initRecyclerCategory() {
-        categoryAdapter = new CategoryAdapter(new CategoryAdapter.IClickCategoryListener() {
-            @Override
-            public void clickCategory(String idCategory) {
-                getListProductOfCategory(idCategory);
-            }
-        });
+        categoryAdapter = new CategoryAdapter(this::getListProductOfCategory);
         categoryAdapter.setData(listCategories);
         rvCategory.setAdapter(categoryAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
@@ -147,77 +135,67 @@ public class HomeFragment extends Fragment {
         db.collection("products")
                 .whereEqualTo("categoryID", idCategory)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Product> clones = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> data = document.getData();
-                                String id = (String) data.get("id");
-                                String name = (String) data.get("name");
-                                int price = ((Long) data.get("price")).intValue();
-                                String categoryID = idCategory;
-                                String urlImage = (String) data.get("urlImage");
-                                String description = (String) data.get("description");
-                                Product product = new Product(id, urlImage, name, price, description, categoryID);
-                                clones.add(product);
-                            }
-                            listProducts = new ArrayList<>();
-                            listProducts.addAll(clones);
-                            productAdapter.setData(listProducts);
-                            progressDialog.dismiss();
-                        } else {
-                            Log.w("-->", "Error getting documents.", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Product> clones = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> data = document.getData();
+                            String id = (String) data.get("id");
+                            String name = (String) data.get("name");
+                            int price = ((Long) Objects.requireNonNull(data.get("price"))).intValue();
+                            String categoryID;
+                            categoryID = idCategory;
+                            String urlImage = (String) data.get("urlImage");
+                            String description = (String) data.get("description");
+                            Product product = new Product(id, urlImage, name, price, description, categoryID);
+                            clones.add(product);
                         }
+                        listProducts = new ArrayList<>();
+                        listProducts.addAll(clones);
+                        productAdapter.setData(listProducts);
+                        progressDialog.dismiss();
+                    } else {
+                        Log.w("-->", "Error getting documents.", task.getException());
                     }
                 });
 
     }
 
     private void initRecyclerProducts() {
-        productAdapter = new ProductAdapter(new ProductAdapter.IClickProductListener() {
-            @Override
-            public void clickShowDetail(Product product) {
-                Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
-                intent.putExtra("product", product);
-                startActivity(intent);
-                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-            }
+        productAdapter = new ProductAdapter(product -> {
+            Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+            intent.putExtra("product", product);
+            startActivity(intent);
+            requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         });
         productAdapter.setData(listProducts);
         rvProduct.setAdapter(productAdapter);
         rvProduct.setLayoutManager(new GridLayoutManager(requireContext(), 2));
     }
 
+    @SuppressLint("SetTextI18n")
     private void getNameUser() {
         DocumentReference ref = db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        tvHelloUser.setText("Hello " + document.get("name").toString());
-                    } else {
-                        Log.d("--->", "No such document");
-                    }
+        ref.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    tvHelloUser.setText("Hello " + Objects.requireNonNull(document.get("name")).toString());
                 } else {
-                    Log.d("--->", "get failed with ", task.getException());
+                    Log.d("--->", "No such document");
                 }
-
+            } else {
+                Log.d("--->", "get failed with ", task.getException());
             }
+
         });
 
     }
 
     private void actionSearch() {
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(requireContext(), SearchProductActivity.class));
-                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-            }
+        mSearch.setOnClickListener(view -> {
+            startActivity(new Intent(requireContext(), SearchProductActivity.class));
+            requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         });
     }
 

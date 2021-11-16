@@ -15,14 +15,14 @@ import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.fpoly.pro1121.userapp.model.ProductOrder;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,40 +50,39 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         return new ProductOrderViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ProductOrderViewHolder holder, int position) {
         ProductOrder productOrder = list.get(position);
         if (productOrder == null) return;
 
         db.collection("products").document(productOrder.getIdProduct())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        String id = (String) data.get("id");
-                        String name = (String) data.get("name");
-                        int price = ((Long) data.get("price")).intValue();
-                        String categoryID = (String) data.get("categoryID");
-                        String urlImage = (String) data.get("urlImage");
-                        String description = (String) data.get("description");
-                        Product product = new Product(id, urlImage, name, price, description, categoryID);
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        assert document != null;
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+                            assert data != null;
+                            String id = (String) data.get("id");
+                            String name = (String) data.get("name");
+                            int price = ((Long) Objects.requireNonNull(data.get("price"))).intValue();
+                            String categoryID = (String) data.get("categoryID");
+                            String urlImage = (String) data.get("urlImage");
+                            String description = (String) data.get("description");
+                            Product product = new Product(id, urlImage, name, price, description, categoryID);
 
 
-                        Glide.with(holder.itemView.getContext())
-                                .load(urlImage)
-                                .centerCrop()
-                                .into(holder.ivImage);
-                        holder.tvName.setText(name);
-                        holder.tvName.setOnClickListener(view -> iClickProductListener.clickShowDetail(product));
-                        holder.ivImage.setOnClickListener(view -> iClickProductListener.clickShowDetail(product));
+                            Glide.with(holder.itemView.getContext())
+                                    .load(urlImage)
+                                    .centerCrop()
+                                    .into(holder.ivImage);
+                            holder.tvName.setText(name);
+                            holder.tvName.setOnClickListener(view -> iClickProductListener.clickShowDetail(product));
+                            holder.ivImage.setOnClickListener(view -> iClickProductListener.clickShowDetail(product));
+                        }
                     }
-                }
-            }
-        });
+                });
         holder.tvUnitPrice.setText(Utils.getFormatNumber(productOrder.getUnitPrice()));
         if (isOrderHistory) {
             holder.tvQuantity.setText("Số lượng mua: " + productOrder.getQuantity());
@@ -118,7 +117,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         void clickShowDetail(Product product);
     }
 
-    public class ProductOrderViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductOrderViewHolder extends RecyclerView.ViewHolder {
         CircleImageView ivImage;
         TextView tvName, tvUnitPrice, tvQuantity;
         ImageView ivMinusQuantity, ivAddQuantity;

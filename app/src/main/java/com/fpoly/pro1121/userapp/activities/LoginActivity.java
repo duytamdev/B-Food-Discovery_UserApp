@@ -2,6 +2,7 @@ package com.fpoly.pro1121.userapp.activities;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,9 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -37,16 +35,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,7 +47,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -66,21 +59,19 @@ public class LoginActivity extends AppCompatActivity {
     GoogleSignInClient googleSignInClient;
     CallbackManager callbackManager;
     private FirebaseAuth mAuth;
-    public final ActivityResultLauncher<Intent> googleResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseAuthWithGoogle(account.getIdToken());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public final ActivityResultLauncher<Intent> googleResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     });
 
+    @SuppressLint("PackageManagerGetSignatures")
     public static String printKeyHash(Activity context) {
         PackageInfo packageInfo;
         String key = null;
@@ -141,13 +132,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(FacebookException exception) {
+                    public void onError(@NonNull FacebookException exception) {
                         // App code
                     }
                 });
-        btnLoginFacebook.setOnClickListener(view -> {
-            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email"));
-        });
+        btnLoginFacebook.setOnClickListener(view -> LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("email")));
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -156,44 +145,39 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser userFb = mAuth.getCurrentUser();
-                            User user = new User(userFb.getUid(), userFb.getDisplayName(), "", "", "", false);
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser userFb = mAuth.getCurrentUser();
+                        assert userFb != null;
+                        User user = new User(userFb.getUid(), userFb.getDisplayName(), "", "", "", false);
 
-                            db.collection("users")
-                                    .document(user.getId())
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-                                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                                            LENGTH_SHORT).show();
-                                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                                                    finish();
-                                                } else {
-                                                    addUserToDatabase(user);
-                                                }
-                                                progressDialog.dismiss();
-                                            } else {
-                                                Log.d("-->", "Failed with: ", task.getException());
-                                            }
+                        db.collection("users")
+                                .document(user.getId())
+                                .get()
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        DocumentSnapshot document = task1.getResult();
+                                        if (document.exists()) {
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
+                                                    LENGTH_SHORT).show();
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                                            finish();
+                                        } else {
+                                            addUserToDatabase(user);
                                         }
-                                    });
+                                        progressDialog.dismiss();
+                                    } else {
+                                        Log.d("-->", "Failed with: ", task1.getException());
+                                    }
+                                });
 
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("-->", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("-->", "signInWithCredential:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -247,22 +231,19 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading ...");
         progressDialog.show();
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            MySharePreference.getInstance(LoginActivity.this).putString("emailCurrent",email);
-                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                    LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Email hoặc password không chính xác",
-                                    LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        progressDialog.dismiss();
+                        MySharePreference.getInstance(LoginActivity.this).putString("emailCurrent",email);
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
+                                LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Email hoặc password không chính xác",
+                                LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 });
     }
@@ -285,43 +266,35 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser userGG = mAuth.getCurrentUser();
-                            User user = new User(userGG.getUid(), userGG.getDisplayName(), "", "", "", false);
-                            db.collection("users")
-                                    .document(user.getId())
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-                                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                                            LENGTH_SHORT).show();
-                                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                                                    finish();
-                                                } else {
-                                                    addUserToDatabase(user);
-                                                }
-                                                progressDialog.dismiss();
-                                            } else {
-                                                Log.d("-->", "Failed with: ", task.getException());
-                                            }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser userGG = mAuth.getCurrentUser();
+                        assert userGG != null;
+                        User user = new User(userGG.getUid(), userGG.getDisplayName(), "", "", "", false);
+                        db.collection("users")
+                                .document(user.getId())
+                                .get()
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        DocumentSnapshot document = task1.getResult();
+                                        if (document.exists()) {
+                                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
+                                                    LENGTH_SHORT).show();
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                                            finish();
+                                        } else {
+                                            addUserToDatabase(user);
                                         }
-                                    });
+                                        progressDialog.dismiss();
+                                    } else {
+                                        Log.d("-->", "Failed with: ", task1.getException());
+                                    }
+                                });
 
-
-//
-                        } else {
-                            // If sign in fails, display a message to the user.
-                        }
                     }
+
                 });
     }
 
@@ -329,15 +302,12 @@ public class LoginActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getId())
                 .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                        finish();
-                    }
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
+                            LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                    finish();
                 });
     }
 
@@ -351,9 +321,21 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        this.doubleBackToExitPressedOnce = false;
         String email = MySharePreference.getInstance(LoginActivity.this).getString("emailCurrent");
         if(email != null){
             edtEmail.setText(email);
         }
+    }
+    private boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this,"Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,38 +3,35 @@ package com.fpoly.pro1121.userapp.activities;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
 import com.fpoly.pro1121.userapp.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 
 public class RegisterActivity extends AppCompatActivity {
     TextInputLayout tilName, tilEmail, tilPassword, tilPhone, tilLocation;
     EditText edtEmail, edtPassword, edtFullName, edtPhone, edtLocation;
     Button btnRegister;
+    Toolbar toolbar;
     TextView tvHaveAnAccount;
-    ImageView ivPre;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
 
@@ -44,8 +41,17 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_register);
         initUI();
+        initToolbar();
         events();
 
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar_register_account);
+        toolbar.setTitle("Đăng kí tài khoản");
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_keyboard_backspace_24);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 
 
@@ -55,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         tilName = findViewById(R.id.til_name_register);
         tilPhone = findViewById(R.id.til_phone_register);
         tilLocation = findViewById(R.id.til_location_register);
-        ivPre = findViewById(R.id.iv_pre_register);
         edtEmail = findViewById(R.id.edt_email_register);
         edtPassword = findViewById(R.id.edt_password_register);
         edtFullName = findViewById(R.id.edt_name_register);
@@ -96,43 +101,24 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         });
-        ivPre.setOnClickListener(view -> {
-            startMyActivity(LoginActivity.class);
-        });
-        tvHaveAnAccount.setOnClickListener(view -> {
-            startMyActivity(LoginActivity.class);
-        });
+        tvHaveAnAccount.setOnClickListener(view -> onBackPressed());
     }
 
-    private void startMyActivity(Class<?> cls) {
-        Intent intent = new Intent(RegisterActivity.this, cls);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-    }
 
     private void actionRegister(String email, String password, String name, String phoneNumber, String location) {
         // khi đăng kí auth thành công tiến thành tạo 1 user có collection id, idUser trùng với uidUser đã tạo trên db
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String userID = mAuth.getCurrentUser().getUid();
-                    User user = new User(userID, name, location, phoneNumber, "", false);
-                    addUserToFireBase(user);
-                } else {
-                    new AlertDialog.Builder(RegisterActivity.this)
-                            .setTitle("Đăng kí thất bại")
-                            .setMessage("Email này được đăng kí")
-                            .setPositiveButton("Thoát đăng kí", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    startMyActivity(LoginActivity.class);
-                                }
-                            })
-                            .setNegativeButton("Thử lại   ", null)
-                            .show();
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                String userID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                User user = new User(userID, name, location, phoneNumber, "", false);
+                addUserToFireBase(user);
+            } else {
+                new AlertDialog.Builder(RegisterActivity.this)
+                        .setTitle("Đăng kí thất bại")
+                        .setMessage("Email này được đăng kí")
+                        .setPositiveButton("Thoát đăng kí", (dialogInterface, i) -> onBackPressed())
+                        .setNegativeButton("Thử lại   ", null)
+                        .show();
             }
         });
     }
@@ -142,13 +128,10 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        db.collection("users").document(user.getId()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
-                startMyActivity(LoginActivity.class);
-            }
+        db.collection("users").document(user.getId()).set(user).addOnSuccessListener(unused -> {
+            progressDialog.dismiss();
+            Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }).addOnFailureListener(e -> Log.w("error", "Lỗi hệ thống vui lòng thử lại"));
     }
 
