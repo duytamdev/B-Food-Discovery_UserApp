@@ -81,10 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // doubleBackToTrue = true: thoát ứng dụng
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
         }
+        // click lần 1: doubleBackToExit = true , show thông báo
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this,"Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
     }

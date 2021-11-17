@@ -1,20 +1,15 @@
 package com.fpoly.pro1121.userapp;
 
-import static androidx.core.content.ContextCompat.startActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

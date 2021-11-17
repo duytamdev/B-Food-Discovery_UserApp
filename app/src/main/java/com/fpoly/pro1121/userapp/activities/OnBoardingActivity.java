@@ -29,7 +29,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         });
 
     }
-
+    // dùng thư viên nên chỉ thay đỗi được: hình ảnh, description, màu, icon
     private ArrayList<PaperOnboardingPage> getPaperBoardingPageData() {
         PaperOnboardingPage scr1 = new PaperOnboardingPage("Welcome to Bhook",
                 "food delivery app that helps you to get the best dishes quickly and in time from your nearest restaurant.",

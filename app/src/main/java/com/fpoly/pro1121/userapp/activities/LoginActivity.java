@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     });
 
     @SuppressLint("PackageManagerGetSignatures")
+    // hàm để lấy keyHash Facebook
     public static String printKeyHash(Activity context) {
         PackageInfo packageInfo;
         String key = null;

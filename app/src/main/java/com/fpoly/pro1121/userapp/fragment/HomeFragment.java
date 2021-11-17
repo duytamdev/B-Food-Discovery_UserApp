@@ -73,25 +73,32 @@ public class HomeFragment extends Fragment {
         return mView;
 
     }
-
+    // đọc dữ liệu categories realtime
     private void realTimeDataBase() {
         db.collection("categories")
                 .addSnapshotListener((value, error) -> {
                     if (value != null) {
                         try {
+                            // tạo 1 list category để lưu dữ liệu
                             List<Category> clones = new ArrayList<>();
+                            // danh sách document
                             List<DocumentSnapshot> snapshotsList = value.getDocuments();
                             for (DocumentSnapshot snapshot : snapshotsList) {
+                                // document dạng map<key,value> nên  khởi tạo 1 map để chứa dữ liệu document
                                 Map<String, Object> data = snapshot.getData();
                                 assert data != null;
                                 String id = Objects.requireNonNull(data.get("id")).toString();
                                 String name = Objects.requireNonNull(data.get("name")).toString();
                                 String urlImage = Objects.requireNonNull(data.get("urlImage")).toString();
                                 Category category = new Category(id, name, urlImage);
+                                // thêm đối tượng vào danh sách đã tạo
                                 clones.add(category);
                             }
+                            // làm mới listCategories
                             listCategories = new ArrayList<>();
+                            // thêm tất cả các category trong clone vào listCategories
                             listCategories.addAll(clones);
+                            // đỗ dữ liệu lên adapter
                             categoryAdapter.setData(listCategories);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -133,9 +140,11 @@ public class HomeFragment extends Fragment {
         progressDialog.setMessage("loading....");
         progressDialog.show();
         db.collection("products")
+                // select các product có categoryID = ifCategory truyền vào
                 .whereEqualTo("categoryID", idCategory)
                 .get()
                 .addOnCompleteListener(task -> {
+                    // trạng thái thành công
                     if (task.isSuccessful()) {
                         List<Product> clones = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -152,6 +161,7 @@ public class HomeFragment extends Fragment {
                         }
                         listProducts = new ArrayList<>();
                         listProducts.addAll(clones);
+                        // đỗ dữ liệu lên adapter
                         productAdapter.setData(listProducts);
                         progressDialog.dismiss();
                     } else {
@@ -175,6 +185,7 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void getNameUser() {
+        // select name current user đổ lên view
         DocumentReference ref = db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -193,6 +204,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void actionSearch() {
+        // khi click vào thanh tìm kiếm start activity Search
         mSearch.setOnClickListener(view -> {
             startActivity(new Intent(requireContext(), SearchProductActivity.class));
             requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);

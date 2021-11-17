@@ -48,6 +48,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     private void resetPassword(String emailReset) {
+        // phương thức reset password của firebase
         mAuth.sendPasswordResetEmail(emailReset)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

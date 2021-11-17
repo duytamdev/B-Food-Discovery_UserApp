@@ -39,6 +39,7 @@ public class ProductOrderDAO {
     public boolean insertProductOrder(ProductOrder productOrder) {
         db = dbHelper.getWritableDatabase();
         try {
+            // nếu product đã tồn tại trong giõ hàng -> cập nhật số lượng, tổng tiền
             if (isProductOrderExists(productOrder)) {
                 ContentValues values = new ContentValues();
                 productOrder.setQuantity(productOrder.getQuantity() + getQuantityProductOrderExists(productOrder));

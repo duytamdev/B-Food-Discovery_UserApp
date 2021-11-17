@@ -131,8 +131,10 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    // cập nhật dữ liệu user: urlImage,name,phoneNumber,location
     private void updateUserFireBase(User userCurrentUser) {
         db.collection("users").document(userCurrentUser.getId())
+                // hàm cập nhật các field
                 .update("name", userCurrentUser.getName(),
                         "phoneNumber", userCurrentUser.getPhoneNumber(),
                         "urlImage", userCurrentUser.getUrlImage(),
@@ -145,6 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
+    // lấy dữ liệu currentUser đỗ lên view
     private void getDataFireBase() {
         db.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                 .get().addOnCompleteListener(task -> {
@@ -164,6 +167,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     urlImageSelected = urlImage;
                                 }
                                 userCurrentUser = new User(id, name, location, phone, urlImage);
+                                // đưa dữ liệu lên view
                                 DOMUser(userCurrentUser);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -183,7 +187,7 @@ public class EditProfileActivity extends AppCompatActivity {
         edtLocation = findViewById(R.id.edt_location_profile);
         btnUpdate = findViewById(R.id.btn_update_profile);
     }
-
+    // khi lấy được dữ liệu currentUser tiến hành đưa dữ liệu lên views
     private void DOMUser(User user) {
         try {
             edtName.setText(user.getName());
