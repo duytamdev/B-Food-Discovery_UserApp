@@ -212,6 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                 if ((tilEmail.getError() != null) || (tilPassword.getError() != null)) {
                     return;
                 }
+                // login email/password
                 actionSignIn(email, password);
 
             } catch (IllegalArgumentException illegalArgumentException) {
@@ -225,27 +226,11 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         });
     }
-
+    // login bằng email và password
     private void actionSignIn(String email, String password) {
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMessage("Loading ...");
-        progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        progressDialog.dismiss();
-                        MySharePreference.getInstance(LoginActivity.this).putString("emailCurrent",email);
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công .",
-                                LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Email hoặc password không chính xác",
-                                LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-                });
+        // đăng nhập thành công -> MainActivity
+        // đăng nhập thất bại -> Toast Lỗi
+
     }
 
     private void loginGoogle() {
