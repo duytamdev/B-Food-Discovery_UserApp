@@ -248,11 +248,11 @@ public class LoginActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
                             finish();
                         } else {
+                            progressDialog.dismiss();
                             new AlertDialog.Builder(LoginActivity.this)
                                     .setMessage("Email của bạn không đúng hoặc Password chưa chính xác")
                                     .setPositiveButton("Thử lại", null)
                                     .show();
-                            progressDialog.dismiss();
                         }
                     }
                 });
