@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-   app:cardBackgroundColor="#F1F1F1"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="#F1F1F1"
     android:layout_marginHorizontal="4dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true"
     android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="154dp"
+            android:layout_width="match_parent"
             app:cardCornerRadius="16dp"
-            android:layout_height="98dp">
+            android:layout_height="wrap_content">
             <ImageView
+                android:minHeight="120dp"
+                android:maxHeight="150dp"
                 android:id="@+id/iv_product_item"
                 android:src="@drawable/ic_launcher_background"
                 android:scaleType="centerCrop"
@@ -25,7 +28,7 @@
         <TextView
             android:id="@+id/tv_name_product_item"
             android:paddingStart="8dp"
-            android:textSize="16dp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginTop="8dp"
             android:maxLines="2"
@@ -34,16 +37,18 @@
             android:maxLength="20"
             android:maxWidth="98dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlSymmetry" />
         <TextView
             android:paddingStart="8dp"
             android:textColor="@color/orange"
             android:text="49.000VND"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:id="@+id/tv_price_product_item"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
