@@ -45,8 +45,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.auth.AuthResult;
-import com.google.android.gms.tasks.OnCompleteListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -237,25 +235,22 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage("Loading....");
         progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            Toast.makeText(LoginActivity.this,"Đăng nhập thành công",LENGTH_SHORT).show();
-                            Intent i = new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-                            finish();
-                        } else {
-                            progressDialog.dismiss();
-                            new AlertDialog.Builder(LoginActivity.this)
-                                    .setMessage("Email của bạn không đúng hoặc Password chưa chính xác")
-                                    .setPositiveButton("Thử lại", null)
-                                    .show();
-                        }
-                    }
-                });
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this,"Đăng nhập thành công",LENGTH_SHORT).show();
+                Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+                finish();
+            } else {
+                progressDialog.dismiss();
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setMessage("Email của bạn không đúng hoặc Password chưa chính xác")
+                        .setPositiveButton("Thử lại", null)
+                        .show();
+            }
+        });
 
     }
 
