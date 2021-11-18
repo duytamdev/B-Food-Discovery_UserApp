@@ -239,6 +239,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 progressDialog.dismiss();
+                MySharePreference.getInstance(this).putString("emailCurrent",email);
                 Toast.makeText(LoginActivity.this,"Đăng nhập thành công",LENGTH_SHORT).show();
                 Intent i = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(i);
