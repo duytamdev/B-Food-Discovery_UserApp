@@ -9,14 +9,18 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.PagerMainAdapter;
+import com.fpoly.pro1121.userapp.database.ProductOrderDAO;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    ChipNavigationBar bottomNavigationBar;
+    public ChipNavigationBar bottomNavigationBar;
     ViewPager2 viewPagerMain;
     PagerMainAdapter pageMainAdapter;
-
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         this.doubleBackToExitPressedOnce = false;
+        String idUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        bottomNavigationBar.showBadge(R.id.action_cart, ProductOrderDAO.getInstance(MainActivity.this).getQuantityProductsOrder(idUser));
     }
 
     @Override

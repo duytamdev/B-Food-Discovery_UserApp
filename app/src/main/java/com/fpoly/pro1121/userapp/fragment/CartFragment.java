@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.Utils;
+import com.fpoly.pro1121.userapp.activities.MainActivity;
 import com.fpoly.pro1121.userapp.activities.OrderComplete;
 import com.fpoly.pro1121.userapp.activities.ProductDetailsActivity;
 import com.fpoly.pro1121.userapp.adapter.ProductOrderAdapter;
@@ -141,6 +142,7 @@ public class CartFragment extends Fragment {
         productOrderAdapter.setData(list);
         unitPrice = ProductOrderDAO.getInstance(requireContext()).getUnitPriceAllProductOrder(userIDExists);
         tvTotal.setText("Tổng Tiền : " + Utils.getFormatNumber(unitPrice));
+        ((MainActivity) this.requireActivity()).bottomNavigationBar.showBadge(R.id.action_cart, ProductOrderDAO.getInstance(requireActivity()).getQuantityProductsOrder(mAuth.getCurrentUser().getUid()));
     }
 
     @Override

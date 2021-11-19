@@ -207,4 +207,28 @@ public class ProductOrderDAO {
             db.close();
         }
     }
+    // get tổng số lượng sản phẩm trong giõ hàng
+    @SuppressLint("Range")
+    public int getQuantityProductsOrder(String idUser){
+        db = dbHelper.getReadableDatabase();
+        db.beginTransaction();
+        int sum = 0;
+        try {
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT SUM(quantity) FROM "+TABLE_NAME+" WHERE "+COLUMN_ID_USER+" = ? ",new String[]{idUser});
+            if(cursor.getCount()>0){
+                cursor.moveToFirst();
+                sum = cursor.getInt(0);
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            e.printStackTrace();
+            sum = 0;
+        }
+        finally{
+            db.endTransaction();
+            db.close();
+        }
+        return sum;
+    }
 }
