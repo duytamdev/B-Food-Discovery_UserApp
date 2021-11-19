@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
@@ -329,13 +331,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.doubleBackToExitPressedOnce = false;
         String email = MySharePreference.getInstance(LoginActivity.this).getString("emailCurrent");
         if(email != null){
             edtEmail.setText(email);
         }
     }
-    private boolean doubleBackToExitPressedOnce = false;
+
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onBackPressed() {
@@ -343,7 +345,10 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         }
+
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this,"Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }
 }

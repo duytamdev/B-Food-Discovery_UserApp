@@ -2,6 +2,8 @@ package com.fpoly.pro1121.userapp.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,25 +77,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onResume() {
         super.onResume();
-        this.doubleBackToExitPressedOnce = false;
         String idUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         bottomNavigationBar.showBadge(R.id.action_cart, ProductOrderDAO.getInstance(MainActivity.this).getQuantityProductsOrder(idUser));
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
-        // doubleBackToTrue = true: thoát ứng dụng
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
         }
-        // click lần 1: doubleBackToExit = true , show thông báo
+
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this,"Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        // nếu quá 2 giây ko thao tác thì chuyen trang thai false
+        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }
 }
