@@ -1,5 +1,6 @@
 package com.fpoly.pro1121.userapp.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -46,11 +47,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             ProductOrder productOrder = new ProductOrder(idUserCurrent, idProduct, productCurrent.getPrice(), quantityOrder);
             boolean result = ProductOrderDAO.getInstance(this).insertProductOrder(productOrder);
             if (result) {
-                Toast.makeText(ProductDetailsActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductDetailsActivity.this, "Đã thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void actionQuantity() {
         ivAddQuantity.setOnClickListener(view -> {
             quantity++;
@@ -79,6 +81,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void initUI() {
         btnAddCart = findViewById(R.id.btnAddCart);
         imgProduct = findViewById(R.id.imgProduct);

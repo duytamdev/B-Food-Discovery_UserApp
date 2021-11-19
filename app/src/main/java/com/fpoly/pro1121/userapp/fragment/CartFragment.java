@@ -127,7 +127,7 @@ public class CartFragment extends Fragment {
                 .setPositiveButton("Xoá", (dialogInterface, i) -> {
                     boolean result = ProductOrderDAO.getInstance(requireContext()).deleteProductOrder(idProductOrder);
                     if (result) {
-                        Toast.makeText(requireContext(), "Product Order deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Sản phẩm trong giỏ hàng đã được xoá", Toast.LENGTH_SHORT).show();
                         reloadData();
                     }
                 })
