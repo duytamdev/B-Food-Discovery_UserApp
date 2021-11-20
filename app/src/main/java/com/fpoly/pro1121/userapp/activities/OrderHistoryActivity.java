@@ -19,6 +19,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +60,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
         db
                 .collection("orders")
                 .whereEqualTo("userID", Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
+                // sắp xếp các hoá đơn từ mới nhất đến cũ nhất
+                .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.w("-->", "Listen failed.", error);
