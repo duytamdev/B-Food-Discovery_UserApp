@@ -347,7 +347,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Nhấn thoát một lần nữa", Toast.LENGTH_SHORT).show();
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }

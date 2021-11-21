@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Click phím back lần nữa để thoát", Toast.LENGTH_SHORT).show();
-        // nếu quá 2 giây ko thao tác thì chuyen trang thai false
+        Toast.makeText(this, "Nhấn thoát một lần nữa", Toast.LENGTH_SHORT).show();
+        // nếu quá 2 giây ko thao tác thì chuyển trạng thai false
         new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }
 }
