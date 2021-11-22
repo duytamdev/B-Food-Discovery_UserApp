@@ -7,7 +7,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fpoly.pro1121.userapp.MySharePreference;
+import com.fpoly.pro1121.userapp.utils.MySharePreference;
 import com.fpoly.pro1121.userapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 

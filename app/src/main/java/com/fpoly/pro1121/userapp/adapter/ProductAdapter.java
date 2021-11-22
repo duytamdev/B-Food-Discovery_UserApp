@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
-import com.fpoly.pro1121.userapp.Utils;
+import com.fpoly.pro1121.userapp.utils.Utils;
 import com.fpoly.pro1121.userapp.model.Product;
 
 import java.util.ArrayList;

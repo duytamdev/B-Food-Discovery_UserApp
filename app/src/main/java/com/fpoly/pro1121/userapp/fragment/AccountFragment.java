@@ -1,6 +1,7 @@
 package com.fpoly.pro1121.userapp.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class AccountFragment extends Fragment {
     TextView tvNameUser;
     TextView tvEditProfile, tvOrderHistory, tvChangePassword, tvChatWithMe, tvLogOut;
     View mView;
+    final String urlFacebook = "https://www.facebook.com/NG.DY.TAM";
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -59,6 +61,12 @@ public class AccountFragment extends Fragment {
                 .show());
         tvOrderHistory.setOnClickListener(view -> startMyActivity(OrderHistoryActivity.class));
         tvChangePassword.setOnClickListener(view -> startMyActivity(ChangePasswordActivity.class));
+        tvChatWithMe.setOnClickListener(view ->{
+            //khi click dẫn đến trang facebook của chủ shop
+           Intent intent = new Intent(Intent.ACTION_VIEW);
+           intent.setData(Uri.parse(urlFacebook));
+           startActivity(intent);
+        });
     }
 
     private void startMyActivity(Class<?> cls) {

@@ -17,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.fpoly.pro1121.userapp.R;
-import com.fpoly.pro1121.userapp.Utils;
+import com.fpoly.pro1121.userapp.utils.Utils;
 import com.fpoly.pro1121.userapp.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;

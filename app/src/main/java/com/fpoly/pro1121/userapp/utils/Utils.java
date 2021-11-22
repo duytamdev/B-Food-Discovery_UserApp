@@ -1,4 +1,4 @@
-package com.fpoly.pro1121.userapp;
+package com.fpoly.pro1121.userapp.utils;
 
 
 import android.annotation.SuppressLint;
