@@ -44,7 +44,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Order order = list.get(position);
         if (order == null) return;
         holder.tvUnitPrice.setText(Utils.getFormatNumber(order.getUnitPrice()));
-        holder.tvDate.setText(Utils.DateToStringMonth(order.getDate()));
+        holder.tvDate.setText(Utils.dateToStringMonth(order.getDate()));
+        holder.tvTime.setText(Utils.dateToStringHour(order.getDate()));
         holder.itemView.setOnClickListener(view -> iOrderListener.clickShowDetail(order.getProductOrderList()));
     }
 
@@ -59,12 +60,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDate, tvUnitPrice;
+        TextView tvDate,tvTime, tvUnitPrice;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tv_date_order);
             tvUnitPrice = itemView.findViewById(R.id.tv_unit_price_order);
+            tvTime = itemView.findViewById(R.id.tv_time_order);
         }
     }
 }

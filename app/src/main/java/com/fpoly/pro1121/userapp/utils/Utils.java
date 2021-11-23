@@ -18,9 +18,11 @@ public class Utils {
 
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("dd\nMMM");
+    @SuppressLint("SimpleDateFormat")
+    public static SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm a");
 
 
-    public static String DateToStringMonth(Date date) {
+    public static String dateToStringMonth(Date date) {
         return formatMonth.format(date);
     }
 
@@ -29,6 +31,9 @@ public class Utils {
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
         return (currencyVN.format(number));
     }
+    public static String dateToStringHour(Date date) {
+      return formatHour.format(date);
+    };
     public static void addTextChangedListenerPass(EditText e, final TextInputLayout t){
         e.setOnFocusChangeListener((view, b) -> {
             if (b && e.getText().toString().isEmpty()) {

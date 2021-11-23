@@ -10,17 +10,31 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_date_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="#0065FF"
             android:paddingHorizontal="40dp"
-            android:paddingVertical="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"
             android:text="20/10"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />
+        <TextView
+            android:paddingBottom="8dp"
+            android:id="@+id/tv_time_order"
+            android:text="10:00 AM"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="#0065FF"
+            android:layout_below="@id/tv_date_order"
+            android:layout_alignEnd="@id/tv_date_order"
+            android:layout_alignStart="@id/tv_date_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_view_order"
             android:layout_marginTop="8dp"
