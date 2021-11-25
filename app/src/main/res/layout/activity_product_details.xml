@@ -8,7 +8,7 @@
     tools:context=".activities.ProductDetailsActivity">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="56dp"
         android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
@@ -121,6 +121,8 @@
     </ScrollView>
 
     <Button
+        android:layout_marginHorizontal="8dp"
+        android:paddingVertical="16dp"
         android:layout_gravity="bottom"
         android:id="@+id/btnAddCart"
         android:layout_width="match_parent"
