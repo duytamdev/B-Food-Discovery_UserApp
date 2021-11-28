@@ -1,6 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PRO1121_UserApp</string>
-    <string name="facebook_app_id">1211095376044958</string>
-    <string name="fb_login_protocol_scheme">fb1211095376044958</string>
-
+    <string name="default_web_client_id" translatable="false">832001951903-jcucopheamho9shdg2qir53mCUV3pqg.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">832001951903</string>
+    <string name="google_api_key" translatable="false">AIzaSyDfUu6W6OUWT68LX-XTpHibejxxb3gwlqE</string>
+    <string name="google_app_id" translatable="false">1:832001951903:android:c3c980b1d2a2697308baaa </string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDfUU6W6OUWT68LX-XTpHibejxxb3gwlqE</string>
+    <string name="google_storage_bucket" translatable="false">project-1-android-teamwork.appspot.com</string>
+    <string name="project_id" translatable="false">project-1-android-teamwork</string>
 </resources>
