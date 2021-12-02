@@ -46,23 +46,28 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvUnitPrice.setText(Utils.getFormatNumber(order.getUnitPrice()));
         holder.tvDate.setText(Utils.dateToStringMonth(order.getDate()));
         holder.tvTime.setText(Utils.dateToStringHour(order.getDate()));
-        holder.tvState.setText(order.getState());
         holder.itemView.setOnClickListener(view -> iOrderListener.clickShowDetail(order.getProductOrderList()));
-        if(order.getState().equalsIgnoreCase("hoàn thành")){
-            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
-            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
-            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.green));
+        try{
+            holder.tvState.setText(order.getState());
+            if(order.getState().equalsIgnoreCase("hoàn thành")){
+                holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
+                holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
+                holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.green));
+            }
+            else if(order.getState().equalsIgnoreCase("đang chuẩn bị")){
+                holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
+                holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
+                holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.yellow));
+            }else{
+                //state cancel
+                holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
+                holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
+                holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.red));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        else if(order.getState().equalsIgnoreCase("đang chuẩn bị")){
-            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
-            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
-            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.yellow));
-        }else{
-            //state cancel
-            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
-            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
-            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.red));
-        }
+
     }
 
     @Override
