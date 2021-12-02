@@ -79,6 +79,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                 Timestamp stamp = (Timestamp) data.get("date");
                                 assert stamp != null;
                                 Date date = stamp.toDate();
+                                String state = (String) data.get("state");
                                 // get list productOrder
                                 List<ProductOrder> productOrderList = new ArrayList<>();
                                 List<Map<String, Object>> productOrders = (List<Map<String, Object>>) data.get("productOrderList");
@@ -92,7 +93,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                     ProductOrder productOrder = new ProductOrder(idProductOrder, idUser, idProduct, priceProduct, quantity, unitPrice);
                                     productOrderList.add(productOrder);
                                 }
-                                Order order = new Order(id, idUser, productOrderList, unitPriceOrder, date);
+                                Order order = new Order(id, idUser, productOrderList, unitPriceOrder, date,state);
                                 clones.add(order);
                             }
                             list = new ArrayList<>();

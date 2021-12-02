@@ -73,7 +73,8 @@ public class CartFragment extends Fragment {
                 ProgressDialog progressDialog = new ProgressDialog(requireContext());
                 progressDialog.setMessage("loading....");
                 progressDialog.show();
-                Order order = new Order(id, userIDExists, productOrderList, unitPrice, new Date());
+                // state mặt định: đang chuẩn bị
+                Order order = new Order(id, userIDExists, productOrderList, unitPrice, new Date(),"đang chuẩn bị");
                 db.collection("orders")
                         .document(order.getId())
                         .set(order)

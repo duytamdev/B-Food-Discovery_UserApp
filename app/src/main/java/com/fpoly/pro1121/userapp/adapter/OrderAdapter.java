@@ -46,7 +46,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvUnitPrice.setText(Utils.getFormatNumber(order.getUnitPrice()));
         holder.tvDate.setText(Utils.dateToStringMonth(order.getDate()));
         holder.tvTime.setText(Utils.dateToStringHour(order.getDate()));
+        holder.tvState.setText(order.getState());
         holder.itemView.setOnClickListener(view -> iOrderListener.clickShowDetail(order.getProductOrderList()));
+        if(order.getState().equalsIgnoreCase("hoàn thành")){
+            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
+            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
+            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.green));
+        }
+        else if(order.getState().equalsIgnoreCase("đang chuẩn bị")){
+            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
+            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.yellow));
+            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.yellow));
+        }else{
+            //state cancel
+            holder.tvTime.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
+            holder.tvDate.setBackgroundColor(holder.itemView.getResources().getColor(R.color.red));
+            holder.tvState.setTextColor(holder.itemView.getResources().getColor(R.color.red));
+        }
     }
 
     @Override
@@ -60,10 +76,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDate,tvTime, tvUnitPrice;
+        TextView tvDate,tvTime, tvUnitPrice,tvState;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvState = itemView.findViewById(R.id.tv_state_order);
             tvDate = itemView.findViewById(R.id.tv_date_order);
             tvUnitPrice = itemView.findViewById(R.id.tv_unit_price_order);
             tvTime = itemView.findViewById(R.id.tv_time_order);

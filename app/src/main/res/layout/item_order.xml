@@ -10,12 +10,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:gravity="center"
             android:id="@+id/tv_date_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="#0065FF"
+            android:gravity="center"
             android:paddingHorizontal="40dp"
             android:paddingTop="8dp"
             android:paddingBottom="4dp"
@@ -23,18 +23,19 @@
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />
+
         <TextView
-            android:paddingBottom="8dp"
             android:id="@+id/tv_time_order"
-            android:text="10:00 AM"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="#0065FF"
-            android:layout_below="@id/tv_date_order"
-            android:layout_alignEnd="@id/tv_date_order"
-            android:layout_alignStart="@id/tv_date_order"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_date_order"
+            android:layout_alignStart="@id/tv_date_order"
+            android:layout_alignEnd="@id/tv_date_order"
+            android:background="#0065FF"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:text="10:00 AM"
+            android:textColor="@color/white" />
         <TextView
             android:id="@+id/tv_view_order"
             android:layout_marginTop="8dp"
@@ -52,6 +53,16 @@
             android:text="50.000 vnd"
             android:textColor="@color/orange"
             android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_state_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Trạng thái"
             android:textStyle="bold" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
