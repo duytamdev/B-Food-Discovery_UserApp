@@ -14,7 +14,9 @@ import com.fpoly.pro1121.userapp.R;
 import com.fpoly.pro1121.userapp.adapter.ProductAdapter;
 import com.fpoly.pro1121.userapp.model.Product;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,7 @@ public class SearchProductActivity extends AppCompatActivity {
         progressDialog.setMessage("loading....");
         progressDialog.show();
         db.collection("products")
+                .orderBy("price", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

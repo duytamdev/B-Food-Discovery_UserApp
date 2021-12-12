@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
     List<Category> listCategories;
     List<Product> listProducts;
     int[] imagesSlide = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner};
-    String idCategoryHamburger = "914981de-654f-47ea-a2ff-17b116f52719";
+    String idCategoryDefault = "86b7a60c-3043-4805-9a49-761697b88740";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         actionSearch();
         realTimeDataBase();
         getNameUser();
-        getListProductOfCategory(idCategoryHamburger);// default show list of hamburger
+        getListProductOfCategory(idCategoryDefault);// default show list of hamburger
         return mView;
 
     }
