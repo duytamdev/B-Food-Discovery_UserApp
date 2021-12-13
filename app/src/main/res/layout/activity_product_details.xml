@@ -121,6 +121,7 @@
     </ScrollView>
 
     <Button
+        android:textStyle="bold"
         android:layout_marginHorizontal="8dp"
         android:paddingVertical="16dp"
         android:layout_gravity="bottom"

@@ -31,7 +31,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
     // dùng thư viên nên chỉ thay đỗi được: hình ảnh, description, màu, icon
     private ArrayList<PaperOnboardingPage> getPaperBoardingPageData() {
-        PaperOnboardingPage scr1 = new PaperOnboardingPage("Welcome to Bhook",
+        PaperOnboardingPage scr1 = new PaperOnboardingPage("Welcome to B Fook",
                 "food delivery app that helps you to get the best dishes quickly and in time from your nearest restaurant.",
                 Color.parseColor("#FFFFFF"), R.drawable.boarding1, R.drawable.ic_more);
         PaperOnboardingPage scr2 = new PaperOnboardingPage("Enjoy fast delivery",
